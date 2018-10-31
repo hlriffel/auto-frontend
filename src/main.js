@@ -1,8 +1,18 @@
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from 'vue';
+import App from './App.vue';
+import router from './router';
 
-Vue.config.productionTip = false
+import '../node_modules/bulma/css/bulma.min.css';
+import VueCookies from 'vue-cookies';
+import GSignInButton from 'vue-google-signin-button';
+
+Vue.config.productionTip = false;
+Vue.use(GSignInButton);
+Vue.use(VueCookies);
+
+window.ENDPOINT_URL = 'https://auto-backend.herokuapp.com';
 
 new Vue({
   render: h => h(App),
-}).$mount('#app')
+  router
+}).$mount('#app');

@@ -1,11 +1,15 @@
 <template>
-  <div id="main" class="container">
+  <div id="main">
     <div class="columns">
       <div class="column is-2">
-        <side-menu></side-menu>
+        <section class="section">
+          <side-menu></side-menu>
+        </section>
       </div>
       <div class="column" id="content">
-
+        <section class="section">
+          <router-view></router-view>
+        </section>
       </div>
     </div>
   </div>

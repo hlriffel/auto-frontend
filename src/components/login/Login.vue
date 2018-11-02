@@ -1,6 +1,6 @@
 <template>
   <div id="login">
-    <section class="hero is-fullheight is-primary">
+    <section class="hero is-fullheight is-primary is-bold">
       <div class="hero-body">
         <div class="container">
           <div class="columns is-centered">
@@ -27,7 +27,7 @@
 <script>
 import axios from 'axios';
 
-import userData from '@/shared/user.js';
+import user from '@/shared/user.js';
 
 export default {
   data() {
@@ -53,11 +53,11 @@ export default {
     signInSuccess(googleUser) {
       const profile = googleUser.getBasicProfile();
 
-      userData.name = profile.getName();
-      userData.email = profile.getEmail();
-      userData.imageUrl = profile.getImageUrl();
+      user.setName(profile.getName());
+      user.setEmail(profile.getEmail());
+      user.setImageUrl(profile.getImageUrl());
 
-      this.$cookies.set('userData', userData);
+      this.$cookies.set('userData', user.getUserAsObject());
 
       const proceedToMain = () => {
         this.$router.push({
@@ -65,14 +65,19 @@ export default {
         });
       }
 
-      this.getUserByEmail(userData.email).then(
+      this.getUserByEmail(user.email).then(
         response => {
-          if (response.data) {
+          const userData = response.data;
+
+          if (userData) {
+            user.setCpf(userData.cpf);
+            user.setAdmin(userData.admin);
+
             proceedToMain();
           }
         },
         error => {
-          this.signUserUp(userData).then(
+          this.signUserUp(user.getUserAsBackendObject()).then(
             () => {
               proceedToMain();
             },

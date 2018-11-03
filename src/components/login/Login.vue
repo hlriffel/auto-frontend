@@ -57,9 +57,9 @@ export default {
       user.setEmail(profile.getEmail());
       user.setImageUrl(profile.getImageUrl());
 
-      this.$cookies.set('userData', user.getUserAsObject());
-
       const proceedToMain = () => {
+        this.$cookies.set('userData', user.getUserAsObject());
+
         this.$router.push({
           path: '/main'
         });
@@ -70,6 +70,7 @@ export default {
           const userData = response.data;
 
           if (userData) {
+            user.setId(userData.id);
             user.setCpf(userData.cpf);
             user.setAdmin(userData.admin);
 
@@ -78,7 +79,15 @@ export default {
         },
         error => {
           this.signUserUp(user.getUserAsBackendObject()).then(
-            () => {
+            response => {
+              const userData = response.data;
+
+              if (userData) {
+                user.setId(userData.id);
+                user.setCpf(userData.cpf);
+                user.setAdmin(userData.admin);
+              }
+
               proceedToMain();
             },
             () => {

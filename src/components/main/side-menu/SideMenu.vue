@@ -27,7 +27,7 @@
           </router-link>
         </ul>
 
-        <div id="admin-section">
+        <div id="admin-section" v-if="profileData.admin">
           <p class="menu-label" style="margin-top: 1em">
             Administração
           </p>
@@ -49,13 +49,23 @@
         </ul>
       </div>
     </aside>
+    <form-cpf
+      v-if="!formCpfClosed"
+      @close="formCpfClosed = true"
+      @save="saveCpf"></form-cpf>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 import user from '@/shared/user.js';
+import FormCpf from '../cpf/FormCpf';
 
 export default {
+  components: {
+    FormCpf
+  },
   data() {
     return {
       profileData: {
@@ -63,14 +73,18 @@ export default {
         email: null,
         imageUrl: null,
         admin: false
-      }
+      },
+      formCpfClosed: false
     }
   },
   mounted() {
     this.profileData.name = user.name;
     this.profileData.email = user.email;
+    this.profileData.cpf = user.cpf;
     this.profileData.imageUrl = user.imageUrl;
     this.profileData.admin = user.admin;
+
+    this.formCpfClosed = (this.profileData.cpf);
   },
   methods: {
     logout() {
@@ -81,6 +95,16 @@ export default {
       this.$router.push({
         path: '/login'
       });
+    },
+    saveCpf(cpf) {
+      this.profileData.cpf = cpf;
+      this.formCpfClosed = true;
+
+      user.setCpf(cpf);
+
+      this.$cookies.set('userData', user.getUserAsObject())
+
+      axios.post(ENDPOINT_URL + '/user', user.getUserAsBackendObject());
     }
   }
 }

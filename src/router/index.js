@@ -9,6 +9,7 @@ import MainComponent from '@/components/main/MainComponent';
 Vue.use(VueRouter);
 
 const routes = [
+  { path: '/', redirect: '/main' },
   { path: '/login', component: Login },
   { path: '/main', component: MainComponent,
     children: [

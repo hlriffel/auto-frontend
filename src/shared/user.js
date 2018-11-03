@@ -1,10 +1,15 @@
 class User {
 
+  id = null;
   name = null;
   email = null;
   cpf = null;
   imageUrl = null;
   admin = false;
+
+  setId(id) {
+    this.id = id;
+  }
   
   setName(name) {
     this.name = name;
@@ -27,6 +32,7 @@ class User {
   }
   
   setUserData(userData) {
+    this.id = userData.id;
     this.name = userData.name;
     this.email = userData.email;
     this.cpf = userData.cpf;
@@ -36,6 +42,7 @@ class User {
 
   getUserAsObject() {
     return {
+      id: this.id,
       name: this.name,
       email: this.email,
       cpf: this.cpf,
@@ -46,6 +53,7 @@ class User {
 
   getUserAsBackendObject() {
     return {
+      id: this.id,
       name: this.name,
       email: this.email,
       cpf: this.cpf,
@@ -54,6 +62,7 @@ class User {
   }
 
   clearUserData() {
+    this.id = null;
     this.name = null;
     this.email = null;
     this.cpf = null;

@@ -10,20 +10,20 @@
           <p class="sub-title">{{ profileData.email }}</p>
         </div>
       </div>
-      <hr>  
+      <div class="is-divider"></div>  
       <div id="action-bar">
         <p class="menu-label">
           Geral
         </p>
         <ul class="menu-list">
-          <router-link tag="li" to="trocar-categoria" class="menu-item" append>
-            <a>Trocar categoria</a>
+          <router-link tag="li" to="/main/selecionar-categorias" class="menu-item">
+            <a :class="{ 'is-active': $route.name === 'selecionar-categorias' }">Selecionar categorias</a>
           </router-link>
-          <router-link tag="li" to="autoavaliacao" class="menu-item" append>
-            <a>Autoavaliação</a>
+          <router-link tag="li" to="/main/autoavaliacao" class="menu-item">
+            <a :class="{ 'is-active': $route.name === 'autoavaliacao' }">Autoavaliação</a>
           </router-link>
-          <router-link tag="li" to="resultados" class="menu-item" append>
-            <a>Resultados</a>
+          <router-link tag="li" to="/main/resultados" class="menu-item">
+            <a :class="{ 'is-active': $route.name === 'resultados' }">Resultados</a>
           </router-link>
         </ul>
 
@@ -32,8 +32,8 @@
             Administração
           </p>
           <ul class="menu-list">
-            <router-link tag="li" to="cadastros" class="menu-item" append>
-              <a>Cadastros</a>
+            <router-link tag="li" to="/main/cadastros" class="menu-item">
+              <a :class="{ 'is-active': $route.name === 'cadastros' }">Cadastros</a>
             </router-link>
           </ul>
         </div>
@@ -42,8 +42,8 @@
           Outras ações
         </p>
         <ul class="menu-list">
-          <router-link tag="li" to="introducao" class="menu-item" append>
-            <a>Ver introdução</a>
+          <router-link tag="li" to="/main/introducao" class="menu-item">
+            <a :class="{ 'is-active': $route.name === 'introducao' }">Ver introdução</a>
           </router-link>
           <li><a @click="logout()">Sair</a></li>
         </ul>
@@ -104,7 +104,7 @@ export default {
 
       this.$cookies.set('userData', user.getUserAsObject())
 
-      axios.post(ENDPOINT_URL + '/user', user.getUserAsBackendObject());
+      axios.post(ENDPOINT_URL + '/usuario', user.getUserAsBackendObject());
     }
   }
 }

@@ -1,13 +1,13 @@
 <template>
   <div id="login">
-    <section class="hero is-fullheight is-primary is-bold">
+    <section class="hero is-fullheight is-info is-bold">
       <div class="hero-body">
         <div class="container">
           <div class="columns is-centered">
             <article class="card is-rounded">
               <div class="card-content">
                 <h1 class="title has-text-dark">Login</h1>
-                <button class="button is-primary is-fullwidth">
+                <button class="button is-info is-fullwidth">
                   <g-signin-button
                     :params="params"
                     @success="signInSuccess"
@@ -39,7 +39,7 @@ export default {
   },
   methods: {
     getUserByEmail(email) {
-      return axios.get(ENDPOINT_URL + '/user/' + email);
+      return axios.get(ENDPOINT_URL + '/usuario/' + email);
     },
     signUserUp(user) {
       const userParam = {
@@ -48,7 +48,7 @@ export default {
         admin: false
       };
 
-      return axios.post(ENDPOINT_URL + '/user', userParam);
+      return axios.post(ENDPOINT_URL + '/usuario', userParam);
     },
     signInSuccess(googleUser) {
       const profile = googleUser.getBasicProfile();
@@ -58,7 +58,7 @@ export default {
       user.setImageUrl(profile.getImageUrl());
 
       const proceedToMain = () => {
-        this.$cookies.set('userData', user.getUserAsObject());
+        this.$cookies.set('userData', user.getUserAsObject(), 60 * 30);
 
         this.$router.push({
           path: '/main'
@@ -78,22 +78,25 @@ export default {
           }
         },
         error => {
-          this.signUserUp(user.getUserAsBackendObject()).then(
-            response => {
-              const userData = response.data;
-
-              if (userData) {
-                user.setId(userData.id);
-                user.setCpf(userData.cpf);
-                user.setAdmin(userData.admin);
+          if (error.response
+              && error.response.status === 404) {
+            this.signUserUp(user.getUserAsBackendObject()).then(
+              response => {
+                const userData = response.data;
+  
+                if (userData) {
+                  user.setId(userData.id);
+                  user.setCpf(userData.cpf);
+                  user.setAdmin(userData.admin);
+                }
+  
+                proceedToMain();
+              },
+              () => {
+                // TODO: Do something
               }
-
-              proceedToMain();
-            },
-            () => {
-              // TODO: Do something
-            }
-          );
+            );
+          }
         }
       );
     },

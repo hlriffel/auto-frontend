@@ -6,6 +6,7 @@
           <side-menu></side-menu>
         </section>
       </div>
+      <div class="is-divider-vertical"></div>
       <div class="column" id="content">
         <section class="section">
           <router-view></router-view>

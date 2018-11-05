@@ -5,19 +5,20 @@ import user from '@/shared/user.js';
 
 import Login from '@/components/login/Login';
 import MainComponent from '@/components/main/MainComponent';
+import SelecionarCategorias from '@/components/main/selecionar-categorias/SelecionarCategorias';
 
 Vue.use(VueRouter);
 
 const routes = [
   { path: '/', redirect: '/main' },
-  { path: '/login', component: Login },
-  { path: '/main', component: MainComponent,
+  { name: 'login', path: '/login', component: Login },
+  { name: 'main', path: '/main', component: MainComponent,
     children: [
-      { path: 'trocar-categoria' },
-      { path: 'autoavaliacao' },
-      { path: 'resultados' },
-      { path: 'cadastros' },
-      { path: 'introducao' }
+      { name: 'selecionar-categorias', path: 'selecionar-categorias', component: SelecionarCategorias },
+      { name: 'autoavaliacao', path: 'autoavaliacao' },
+      { name: 'resultados', path: 'resultados' },
+      { name: 'cadastros', path: 'cadastros' },
+      { name: 'introducao', path: 'introducao' }
     ]
   }
 ];

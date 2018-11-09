@@ -25,6 +25,9 @@
           <router-link tag="li" to="/main/resultados" class="menu-item">
             <a :class="{ 'is-active': $route.name === 'resultados' }">Resultados</a>
           </router-link>
+            <router-link tag="li" to="/main/cadastrarCategoria" class="menu-item">
+            <a :class="{ 'is-active': $route.name === 'cadastrarCategoria' }">Cadastros</a>
+          </router-link>
         </ul>
 
         <div id="admin-section" v-if="profileData.admin">
@@ -58,10 +61,8 @@
 
 <script>
 import axios from 'axios';
-
 import user from '@/shared/user.js';
 import FormCpf from '../cpf/FormCpf';
-
 export default {
   components: {
     FormCpf
@@ -83,15 +84,12 @@ export default {
     this.profileData.cpf = user.cpf;
     this.profileData.imageUrl = user.imageUrl;
     this.profileData.admin = user.admin;
-
     this.formCpfClosed = (this.profileData.cpf);
   },
   methods: {
     logout() {
       user.clearUserData();
-
       this.$cookies.remove('userData');
-
       this.$router.push({
         path: '/login'
       });
@@ -99,11 +97,8 @@ export default {
     saveCpf(cpf) {
       this.profileData.cpf = cpf;
       this.formCpfClosed = true;
-
       user.setCpf(cpf);
-
       this.$cookies.set('userData', user.getUserAsObject())
-
       axios.post(ENDPOINT_URL + '/usuario', user.getUserAsBackendObject());
     }
   }
@@ -114,7 +109,6 @@ export default {
   .avatar {
     padding-bottom: 20px;
   }
-
   .avatar img {
     padding: 5px;
     background: #fff;

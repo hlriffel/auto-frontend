@@ -6,8 +6,10 @@ import user from '@/shared/user.js';
 import Login from '@/components/login/Login';
 import MainComponent from '@/components/main/MainComponent';
 import SelecionarCategorias from '@/components/main/selecionar-categorias/SelecionarCategorias';
+import CadastrarCategoria from '@/components/main/cadastrarCategoria/CadastrarCategoria';
 
 Vue.use(VueRouter);
+
 
 const routes = [
   { path: '/', redirect: '/main' },
@@ -18,7 +20,8 @@ const routes = [
       { name: 'autoavaliacao', path: 'autoavaliacao' },
       { name: 'resultados', path: 'resultados' },
       { name: 'cadastros', path: 'cadastros' },
-      { name: 'introducao', path: 'introducao' }
+      { name: 'introducao', path: 'introducao' },
+      { name: 'cadastrarCategoria', path: 'cadastrarCategoria', component: CadastrarCategoria }
     ]
   }
 ];

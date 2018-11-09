@@ -9,11 +9,14 @@ import GSignInButton from 'vue-google-signin-button';
 import Toasted from 'vue-toasted';
 
 import { VueMaskDirective } from 'v-mask';
+import VueGoodTablePlugin from 'vue-good-table';
+import 'vue-good-table/dist/vue-good-table.css';
 
 Vue.config.productionTip = false;
 Vue.use(GSignInButton);
 Vue.use(VueCookies);
 Vue.use(Toasted);
+Vue.use(VueGoodTablePlugin);
 
 Vue.directive('mask', VueMaskDirective);
 

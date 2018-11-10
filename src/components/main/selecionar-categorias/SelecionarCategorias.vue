@@ -26,7 +26,6 @@
     </div>
   </div>
 </template>
-</vue-good-table>
 
 <script>
 import axios from 'axios';

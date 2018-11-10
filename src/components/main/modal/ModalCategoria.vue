@@ -10,8 +10,8 @@
         <section class="modal-card-body">
             <!-- Content ... -->
             <div class="field">
-               <label for="nomeCategoria" class="label">Categoria</label>
-                <input type="text" v-model="categoria.name" required class="input" id="nomeCategoria"/>  
+               <label for="nome" class="label">Categoria</label>
+                <input type="text" v-model="categoria.nome" required class="input" id="nome"/>  
             </div>
         </section>
                <footer class="modal-card-foot" style="justify-content: flex-end" >
@@ -36,14 +36,13 @@ export default {
   data() {
     return {
       categoria: {
-        nomeCategoria: ''
+        nome: ''
       }
     }
   },
   methods: {
     save() {
       this.$emit('save', this.categoria);
-      console.log(this.nomeCategoria)
     },
     close() {
       this.$emit('close');

@@ -45,8 +45,6 @@
 import ModalCategoria from "../modal/ModalCategoria";
 import BreadCrumb from '../breadCrumb/BreadCrumb';
 import axios from 'axios';
-/*import { VueGoodTable } from 'vue-good-table';
-import 'vue-good-table/dist/vue-good-table.css';*/
 
 export default {
   components: {
@@ -61,7 +59,7 @@ export default {
       columns: [
         {
           label: "Informar Categoria",
-          field: "name"
+          field: "nome"
         },
         {
           label: "",
@@ -79,12 +77,25 @@ export default {
       ]
     };
   },
+   mounted() {
+
+
+  },
   methods: {
     salvar(categoria) {
       let c = Object.assign({}, categoria)
       this.rows.push(c)
       this.showForm = false
+
+      axios.post(ENDPOINT_URL + '/categoria', categoria).then(
+          () => {
+            this.$router.push({
+              path: '/main/selecionar-categorias'
+            });
+          }
+        );
     },
+    
     excluir(id) {
       if (confirm("Deseja excluir a categoria?")) {
         const rowId = this.rows.indexOf(id);
@@ -97,7 +108,7 @@ export default {
     },
     novo() {
       this.categoriaAtual = {
-        name: ''
+        nome: ''
       }
       this.showForm = true
     }

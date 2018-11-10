@@ -20,7 +20,7 @@
       <template slot="table-row" slot-scope="props" >
         {{props.formattedRow[props.column.field]}} 
         <div class="level-item" v-if="props.column.field === 'excluir/editar'">
-            <button class="button is-link" @click="excluir(props.row.id)">Excluir</button>
+            <button class="button is-link" @click="excluir(props.row.id)">Excluir</button> 
             <button class="button is-link" @click="editar(props.row)">Editar </button>  
         </div>
         </template>
@@ -43,8 +43,8 @@
 
 <script>
 import ModalCategoria from "../modal/ModalCategoria";
-import BreadCrumb from '../breadCrumb/BreadCrumb';
-import axios from 'axios';
+import BreadCrumb from "../breadCrumb/BreadCrumb";
+import axios from "axios";
 
 export default {
   components: {
@@ -72,45 +72,55 @@ export default {
           type: "excluir/editar"
         }
       ],
-      rows: [
-       
-      ]
+      rows: []
     };
   },
-   mounted() {
-
-
+  mounted() {
+    axios.get(ENDPOINT_URL + "/categoria").then(response => {
+      this.rows = response.data;
+    });
   },
   methods: {
     salvar(categoria) {
-      let c = Object.assign({}, categoria)
-      this.rows.push(c)
-      this.showForm = false
+      let c = Object.assign({}, categoria);
+      this.rows.push(c);
+      this.showForm = false;
 
-      axios.post(ENDPOINT_URL + '/categoria', categoria).then(
-          () => {
-            this.$router.push({
-              path: '/main/selecionar-categorias'
-            });
-          }
-        );
+      axios.post(ENDPOINT_URL + "/categoria", categoria).then(() => {
+        this.$router.push({
+          path: "/main/cadastrarCategoria"
+        });
+      });
     },
-    
-    excluir(id) {
-      if (confirm("Deseja excluir a categoria?")) {
-        const rowId = this.rows.indexOf(id);
-        this.rows.splice(rowId, 1);
+    editar(row) {
+      this.showForm = true;
+      this.categoriaAtual = row;
+
+      if (row.id === null) {
+        axios.post(ENDPOINT_URL + "/categoria", row);
+      } else {
+        //Update
+        axios.put(ENDPOINT_URL + "/categoria", row.id);
       }
     },
-    editar(row){
-      this.showForm = true
-      this.categoriaAtual = row
+    excluir(row) {
+      if (confirm("Deseja excluir a categoria?")) {
+        axios
+          .delete(ENDPOINT_URL + "/categoria", row.id)
+          .then(Response => {
+            let rowId = this.rows.indexOf(row);
+            this.rows.splice(idx, 1);
+          })
+          .catch(erro => {
+            console.log(erro);
+          });
+      }
     },
     novo() {
       this.categoriaAtual = {
-        nome: ''
-      }
-      this.showForm = true
+        nome: ""
+      };
+      this.showForm = true;
     }
   }
 };

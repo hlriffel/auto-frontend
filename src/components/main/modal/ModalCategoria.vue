@@ -29,34 +29,33 @@
 
 <script>
 export default {
-   props: {
-      categoriaEditar: Object
+  props: {
+    categoriaEditar: Object
   },
   mounted() {},
   data() {
     return {
       categoria: {
-        nome: ''
+        id: null,
+        nome: ""
       }
-    }
+    };
   },
   methods: {
     save() {
-      this.$emit('save', this.categoria);
+      this.$emit("save", this.categoria);
     },
     close() {
-      this.$emit('close');
-    },
+      this.$emit("close");
+    }
   },
   watch: {
-    categoriaEditar: function (val) {
+    categoriaEditar: function(val) {
       this.categoria = val;
     }
   }
-
-}
+};
 </script>
 
 <style>
-
 </style>

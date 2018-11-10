@@ -18,15 +18,10 @@
 
 <script>
 import SideMenu from './side-menu/SideMenu';
-import CadastrarCategoria from './cadastrarCategoria/CadastrarCategoria';
-import BreadCrumb from './breadCrumb/BreadCrumb';
 
 export default {
   components: {
-    SideMenu,
-    CadastrarCategoria,
-    BreadCrumb
-    
+    SideMenu
   }
 }
 </script>

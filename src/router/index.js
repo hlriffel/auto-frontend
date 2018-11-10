@@ -6,10 +6,12 @@ import user from '@/shared/user.js';
 import Login from '@/components/login/Login';
 import MainComponent from '@/components/main/MainComponent';
 import SelecionarCategorias from '@/components/main/selecionar-categorias/SelecionarCategorias';
-import CadastrarCategoria from '@/components/main/cadastrarCategoria/CadastrarCategoria';
+
+import Cadastros from '@/components/main/cadastros/Cadastros';
+import CadastrarCategoria from '@/components/main/cadastros/categoria/CadastrarCategoria';
+import CadastroConteudo from '@/components/main/cadastros/conteudo/CadastroConteudo';
 
 Vue.use(VueRouter);
-
 
 const routes = [
   { path: '/', redirect: '/main' },
@@ -19,9 +21,16 @@ const routes = [
       { name: 'selecionar-categorias', path: 'selecionar-categorias', component: SelecionarCategorias },
       { name: 'autoavaliacao', path: 'autoavaliacao' },
       { name: 'resultados', path: 'resultados' },
-      { name: 'cadastros', path: 'cadastros' },
       { name: 'introducao', path: 'introducao' },
-      { name: 'cadastrarCategoria', path: 'cadastrarCategoria', component: CadastrarCategoria }
+      { name: 'cadastros', path: 'cadastros', component: Cadastros,
+        children: [
+          { name: 'categoria', path: 'categoria', component: CadastrarCategoria },
+          { name: 'caracteristica', path: 'caracteristica' },
+          { name: 'questionario', path: 'questionario' },
+          { name: 'licao', path: 'licao' },
+          { name: 'conteudo', path: 'conteudo', component: CadastroConteudo }
+        ]
+      }
     ]
   }
 ];

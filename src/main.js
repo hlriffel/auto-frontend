@@ -13,8 +13,9 @@ import VueGoodTablePlugin from 'vue-good-table';
 import 'vue-good-table/dist/vue-good-table.css';
 
 Vue.config.productionTip = false;
-Vue.use(GSignInButton);
+
 Vue.use(VueCookies);
+Vue.use(GSignInButton);
 Vue.use(Toasted);
 Vue.use(VueGoodTablePlugin);
 

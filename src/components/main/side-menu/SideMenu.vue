@@ -10,7 +10,7 @@
           <p class="sub-title">{{ profileData.email }}</p>
         </div>
       </div>
-      <div class="is-divider"></div>  
+      <div class="is-divider"></div>
       <div id="action-bar">
         <p class="menu-label">
           Geral
@@ -25,18 +25,16 @@
           <router-link tag="li" to="/main/resultados" class="menu-item">
             <a :class="{ 'is-active': $route.name === 'resultados' }">Resultados</a>
           </router-link>
-            <router-link tag="li" to="/main/cadastrarCategoria" class="menu-item">
-            <a :class="{ 'is-active': $route.name === 'cadastrarCategoria' }">Cadastros</a>
-          </router-link>
         </ul>
 
-        <div id="admin-section" v-if="profileData.admin">
+        <!-- <div id="admin-section" v-if="profileData.admin"> -->
+        <div id="admin-section">
           <p class="menu-label" style="margin-top: 1em">
             Administração
           </p>
           <ul class="menu-list">
             <router-link tag="li" to="/main/cadastros" class="menu-item">
-              <a :class="{ 'is-active': $route.name === 'cadastros' }">Cadastros</a>
+              <a :class="{ 'is-active': isRotaCadastros() }">Cadastros</a>
             </router-link>
           </ul>
         </div>
@@ -100,6 +98,9 @@ export default {
       user.setCpf(cpf);
       this.$cookies.set('userData', user.getUserAsObject())
       axios.post(ENDPOINT_URL + '/usuario', user.getUserAsBackendObject());
+    },
+    isRotaCadastros() {
+      return this.$route.path.indexOf('cadastros') > -1;
     }
   }
 }

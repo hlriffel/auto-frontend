@@ -37,11 +37,11 @@
       <p>Item {{ contents.length ? selectedContent + 1 : 0 }} de {{ contents.length }}</p>
     </div>
     <div id="salvar">
-      <a
+      <button
         class="button is-link is-pulled-right"
         @click="save()"
         v-show="!uploading"
-        :disabled="!addedContents.length && !removedContents.length">Salvar</a>
+        :disabled="!addedContents.length && !removedContents.length">Salvar</button>
       <a class="button is-link is-pulled-right is-loading" v-show="uploading">Salvar</a>
     </div>
   </div>

@@ -10,6 +10,7 @@ import SelecionarCategorias from '@/components/main/selecionar-categorias/Seleci
 import Cadastros from '@/components/main/cadastros/Cadastros';
 import CadastrarCategoria from '@/components/main/cadastros/categoria/CadastrarCategoria';
 import CadastroConteudo from '@/components/main/cadastros/conteudo/CadastroConteudo';
+import CadastrarCaracteristica from '@/components/main/cadastros/caracteristica/CadastrarCaracteristica';
 
 Vue.use(VueRouter);
 
@@ -25,7 +26,7 @@ const routes = [
       { name: 'cadastros', path: 'cadastros', component: Cadastros,
         children: [
           { name: 'categoria', path: 'categoria', component: CadastrarCategoria },
-          { name: 'caracteristica', path: 'caracteristica' },
+          { name: 'caracteristica', path: 'caracteristica', component: CadastrarCaracteristica },
           { name: 'questionario', path: 'questionario' },
           { name: 'licao', path: 'licao' },
           { name: 'conteudo', path: 'conteudo', component: CadastroConteudo }

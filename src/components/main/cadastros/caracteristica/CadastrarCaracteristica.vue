@@ -1,5 +1,5 @@
 <template>
-  <div id="cadastro-categoria">
+  <div id="cadastro-caracteristica">
     <vue-good-table
       :columns="columns"
       :rows="rows"
@@ -18,22 +18,22 @@
       <button class="button is-link" @click="novo()">Adicionar</button>     
     </div>
     <br>
-    <modal-categoria v-show="showForm"
-            :categoriaEditar="categoriaAtual"
+    <modal-caracteristica v-show="showForm"
+            :caracteristicaEditar="caracteristicaAtual"
             @close="showForm = false"
             @save="salvar">
-    </modal-categoria>
+    </modal-caracteristica>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 
-import ModalCategoria from './ModalCategoria';
+import ModalCaracteristica from './ModalCaracteristica';
 
 export default {
   components: {
-    ModalCategoria
+    ModalCaracteristica
   },
   data() {
     return {
@@ -48,12 +48,16 @@ export default {
         enabled: true,
         perPage: 10
       },
-      categoriaAtual: null,
+      caracteristicaAtual: null,
       showForm: false,
       columns: [
         {
-          label: 'Informar Categoria',
+          label: 'Informar Característica',
           field: 'nome'
+        },
+        {
+          label: 'Observação',
+          field: 'observacao'
         },
         {
           label: '',
@@ -70,40 +74,37 @@ export default {
     };
   },
   mounted() {
-    axios.get(ENDPOINT_URL + '/categoria').then(response => {
-      this.rows = response.data;
-    });
+    this.index()
   },
   methods: {
-    salvar(categoria) {
-      const c = Object.assign({}, categoria);
-      this.rows.push(c);
-      this.showForm = false;
-
-      axios.post(ENDPOINT_URL + '/categoria', categoria).then(() => {
+    index(){
+      axios.get(ENDPOINT_URL + '/caracteristica').then(response => {
+        this.rows = response.data;
+      })
+    },
+    salvar(caracteristica) {
+      const c = Object.assign({}, caracteristica);
+      
+      axios.post(ENDPOINT_URL + '/caracteristica', c).then(() => {
         this.$router.push({
-          path: '/main/cadastros/categoria'
+          path: '/main/cadastros/caracteristica'
         });
+        
+        this.showForm = false;
+        this.index();
       });
+
     },
     editar(row) {
       this.showForm = true;
-      this.categoriaAtual = row;
-
-      if (row.id === null) {
-        axios.post(ENDPOINT_URL + '/categoria', row);
-      } else {
-        //Update
-        axios.put(ENDPOINT_URL + '/categoria', row.id);
-      }
+      this.caracteristicaAtual = row;    
     },
     excluir(row) {
-      if (confirm('Deseja excluir a categoria?')) {
+      if (confirm('Deseja excluir a caracteristica?')) {
         axios
-          .delete(ENDPOINT_URL + '/categoria/' + row)
+          .delete(ENDPOINT_URL + '/caracteristica/' + row)
           .then(Response => {
-            let rowId = this.rows.indexOf(row);
-            this.rows.splice(idx, 1);
+            this.index();
           })
           .catch(erro => {
             console.log(erro);
@@ -111,8 +112,10 @@ export default {
       }
     },
     novo() {
-      this.categoriaAtual = {
-        nome: ''
+      this.caracteristicaAtual = {
+        id: null,
+        nome: '', 
+        observacao: ''
       };
       this.showForm = true;
     }

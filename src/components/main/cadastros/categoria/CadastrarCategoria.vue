@@ -100,7 +100,7 @@ export default {
     excluir(row) {
       if (confirm('Deseja excluir a categoria?')) {
         axios
-          .delete(ENDPOINT_URL+ "/categoria" + "/" + row )
+          .delete(ENDPOINT_URL + '/categoria/' + row)
           .then(Response => {
             let rowId = this.rows.indexOf(row);
             this.rows.splice(idx, 1);

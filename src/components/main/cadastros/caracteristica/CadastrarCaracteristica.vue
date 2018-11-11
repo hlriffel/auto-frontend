@@ -29,6 +29,8 @@
 <script>
 import axios from 'axios';
 
+import toastFactory from '@/shared/toastFactory.js';
+
 import ModalCaracteristica from './ModalCaracteristica';
 
 export default {
@@ -52,7 +54,7 @@ export default {
       showForm: false,
       columns: [
         {
-          label: 'Informar Característica',
+          label: 'Informar característica',
           field: 'nome'
         },
         {
@@ -74,23 +76,18 @@ export default {
     };
   },
   mounted() {
-    this.index()
+    this.index();
   },
   methods: {
-    index(){
+    index() {
       axios.get(ENDPOINT_URL + '/caracteristica').then(response => {
         this.rows = response.data;
-      })
+      });
     },
     salvar(caracteristica) {
-      const c = Object.assign({}, caracteristica);
-      
-      axios.post(ENDPOINT_URL + '/caracteristica', c).then(() => {
-        this.$router.push({
-          path: '/main/cadastros/caracteristica'
-        });
-        
-        this.showForm = false;
+      this.showForm = false;
+
+      axios.post(ENDPOINT_URL + '/caracteristica', caracteristica).then(() => {
         this.index();
       });
 
@@ -100,16 +97,23 @@ export default {
       this.caracteristicaAtual = row;    
     },
     excluir(row) {
-      if (confirm('Deseja excluir a caracteristica?')) {
-        axios
-          .delete(ENDPOINT_URL + '/caracteristica/' + row)
-          .then(Response => {
+      const positiveCallback = (e, toast) => {
+        axios.delete(ENDPOINT_URL + '/caracteristica/' + row).then(
+          () => {
+            toast.goAway(0);
             this.index();
-          })
-          .catch(erro => {
-            console.log(erro);
-          });
-      }
+          },
+          () => {
+            toast.goAway(0);
+            toastFactory.showPrimaryToast('Não é possível excluir essa característica. Ela está sendo usada para outros cadastros.');
+          }
+        );
+      };
+      const negativeCallback = (e, toast) => {
+        toast.goAway(0);
+      };
+
+      toastFactory.showConfirmToast('Deseja excluir a característica?', positiveCallback, negativeCallback);
     },
     novo() {
       this.caracteristicaAtual = {

@@ -31,6 +31,7 @@
 import axios from 'axios';
 
 import user from '@/shared/user.js';
+import toastFactory from '@/shared/toastFactory.js';
 
 export default {
   data() {
@@ -89,17 +90,7 @@ export default {
           }
         );
       } else {
-        this.$toasted.show("É necessário selecionar pelo menos uma categoria!", {
-          theme: "primary",
-          position: "bottom-center",
-          duration: 5000,
-          action: {
-            text: 'FECHAR',
-            onClick: (e, toast) => {
-              toast.goAway(0);
-            }
-          }
-        });
+        toastFactory.showPrimaryToast('É necessário selecionar pelo menos uma categoria!');
       }
     }
   }

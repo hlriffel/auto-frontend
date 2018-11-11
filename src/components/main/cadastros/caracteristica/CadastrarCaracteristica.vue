@@ -56,8 +56,8 @@ export default {
           field: 'nome'
         },
         {
-          label: 'Descricao',
-          field: 'descricao'
+          label: 'Observação',
+          field: 'observacao'
         },
         {
           label: '',
@@ -74,43 +74,37 @@ export default {
     };
   },
   mounted() {
-    axios.get(ENDPOINT_URL + '/caracteristica').then(response => {
-      this.rows = response.data;
-    });
+    this.index()
   },
   methods: {
+    index(){
+      axios.get(ENDPOINT_URL + '/caracteristica').then(response => {
+        this.rows = response.data;
+      })
+    },
     salvar(caracteristica) {
       const c = Object.assign({}, caracteristica);
-      this.rows.push(c);
-      this.showForm = false;
-
-      axios.post(ENDPOINT_URL + '/caracteristica', caracteristica).then(() => {
+      
+      axios.post(ENDPOINT_URL + '/caracteristica', c).then(() => {
         this.$router.push({
           path: '/main/cadastros/caracteristica'
         });
+        
+        this.showForm = false;
+        this.index();
       });
+
     },
     editar(row) {
       this.showForm = true;
-      this.caracteristicaAtual = row;
-
-      if (row.id === null) {
-        axios.post(ENDPOINT_URL + '/caracteristica', row);
-      } else {
-        //Update
-        axios.put(ENDPOINT_URL + '/caracteristica', row.id);
-         this.$router.push({
-          path: '/main/cadastros/caracteristica'
-        });
-      }
+      this.caracteristicaAtual = row;    
     },
     excluir(row) {
       if (confirm('Deseja excluir a caracteristica?')) {
         axios
-          .delete(ENDPOINT_URL + '/caracteristica', row.id)
+          .delete(ENDPOINT_URL + '/caracteristica/' + row)
           .then(Response => {
-            let rowId = this.rows.indexOf(row);
-            this.rows.splice(idx, 1);
+            this.index();
           })
           .catch(erro => {
             console.log(erro);
@@ -119,7 +113,9 @@ export default {
     },
     novo() {
       this.caracteristicaAtual = {
-        nome: ''
+        id: null,
+        nome: '', 
+        observacao: ''
       };
       this.showForm = true;
     }

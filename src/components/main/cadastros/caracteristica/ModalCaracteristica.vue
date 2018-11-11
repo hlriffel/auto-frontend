@@ -13,8 +13,8 @@
             <input type="text" v-model="caracteristica.nome" required class="input" id="nome"/>  
           </div>
           <div class="field">
-            <label for="descricao" class="label">Descrição</label>
-            <textarea v-model="caracteristica.descricao" required class="textarea has-fixed-size" id="descricao"></textarea>       
+            <label for="observacao" class="label">Observação</label>
+            <textarea v-model="caracteristica.observacao" required class="textarea has-fixed-size" id="observacao"></textarea>       
           </div>
         </section>
         <footer class="modal-card-foot" style="justify-content: flex-end">
@@ -38,7 +38,7 @@ export default {
       caracteristica: {
         id: null,
         nome: '',
-        descricao: ''
+        observacao: ''
       }
     };
   },

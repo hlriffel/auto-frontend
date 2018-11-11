@@ -21,7 +21,8 @@ Vue.use(VueGoodTablePlugin);
 
 Vue.directive('mask', VueMaskDirective);
 
-window.ENDPOINT_URL = 'https://auto-backend.herokuapp.com';
+//window.ENDPOINT_URL = 'https://auto-backend.herokuapp.com';
+window.ENDPOINT_URL = 'http://localhost:8090';
 
 new Vue({
   render: h => h(App),

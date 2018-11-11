@@ -7,7 +7,7 @@
             <img :src="profileData.imageUrl" alt="User image">
           </figure>
           <p class="title">{{ profileData.name }}</p>
-          <p class="sub-title">{{ profileData.email }}</p>
+          <p>{{ profileData.email }}</p>
         </div>
       </div>
       <div class="is-divider"></div>

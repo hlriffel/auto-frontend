@@ -52,7 +52,9 @@ export default {
   },
   watch: {
     caracteristicaEditar: function(val) {
-      this.caracteristica = val;
+      this.caracteristica = {
+        ...val
+      };
     }
   }
 }

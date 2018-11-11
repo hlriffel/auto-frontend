@@ -97,11 +97,9 @@ export default {
       if (file.type === APPLICATION_PDF) {
         tipo = 'P';
         caminho = `${ENDPOINT_URL}/conteudo/pdf/${key}`;
-        // caminho = `http://localhost:8090/conteudo/pdf/${key}`;
       } else {
         tipo = 'V';
         caminho = `${ENDPOINT_URL}/conteudo/video/${key}`;
-        // caminho = `http://localhost:8090/conteudo/video/${key}`;
       }
 
       const content = {
@@ -151,7 +149,6 @@ export default {
       };
 
       axios.post(ENDPOINT_URL + '/conteudo', contentData).then(
-      // axios.post('http://localhost:8090/conteudo', contentData).then(
         () => {
           const formData = new FormData();
           this.addedContents.forEach(
@@ -161,7 +158,6 @@ export default {
           );
 
           axios.post(ENDPOINT_URL + '/conteudo/upload', formData, {
-          // axios.post('http://localhost:8090/conteudo/upload', formData, {
             headers: {
               'content-type': 'multipart/form-data'
             }
@@ -180,14 +176,12 @@ export default {
     loadContents() {
       if (this.lecture) {
         axios.get(ENDPOINT_URL + '/conteudo/' + this.lecture.id).then(
-        // axios.get('http://localhost:8090/conteudo/' + this.lecture.id).then(
           response => {
             this.contents = response.data;
           }
         );
       } else {
         axios.get(ENDPOINT_URL + '/conteudo').then(
-        // axios.get('http://localhost:8090/conteudo').then(
           response => {
             this.contents = response.data;
           }

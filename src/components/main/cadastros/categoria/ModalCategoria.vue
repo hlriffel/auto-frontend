@@ -28,7 +28,6 @@ export default {
   props: {
     categoriaEditar: Object
   },
-  mounted() {},
   data() {
     return {
       categoria: {
@@ -47,7 +46,9 @@ export default {
   },
   watch: {
     categoriaEditar: function(val) {
-      this.categoria = val;
+      this.categoria = {
+        ...val
+      };
     }
   }
 }

@@ -8,7 +8,7 @@
       <template slot="table-row" slot-scope="props" >
         {{ props.formattedRow[props.column.field] }}
         <div class="level-item" v-if="props.column.field === 'excluir/editar'">
-          <button class="button is-link" @click="excluir(props.row.id)">Excluir</button> 
+          <button class="button is-link" @click="excluir(props.row)">Excluir</button> 
           <button class="button is-link" @click="editar(props.row)">Editar</button>  
         </div>
       </template>
@@ -28,6 +28,8 @@
 
 <script>
 import axios from 'axios';
+
+import toastFactory from '@/shared/toastFactory.js';
 
 import ModalCategoria from './ModalCategoria';
 
@@ -70,45 +72,43 @@ export default {
     };
   },
   mounted() {
-    axios.get(ENDPOINT_URL + '/categoria').then(response => {
-      this.rows = response.data;
-    });
+    this.loadCategories();
   },
   methods: {
+    loadCategories() {
+      axios.get(ENDPOINT_URL + '/categoria').then(response => {
+        this.rows = response.data;
+      });
+    },
     salvar(categoria) {
-      const c = Object.assign({}, categoria);
-      this.rows.push(c);
       this.showForm = false;
 
       axios.post(ENDPOINT_URL + '/categoria', categoria).then(() => {
-        this.$router.push({
-          path: '/main/cadastros/categoria'
-        });
+        this.loadCategories();
       });
     },
     editar(row) {
       this.showForm = true;
       this.categoriaAtual = row;
-
-      if (row.id === null) {
-        axios.post(ENDPOINT_URL + '/categoria', row);
-      } else {
-        //Update
-        axios.put(ENDPOINT_URL + '/categoria', row.id);
-      }
     },
     excluir(row) {
-      if (confirm('Deseja excluir a categoria?')) {
-        axios
-          .delete(ENDPOINT_URL + '/categoria/' + row)
-          .then(Response => {
-            let rowId = this.rows.indexOf(row);
-            this.rows.splice(idx, 1);
-          })
-          .catch(erro => {
-            console.log(erro);
-          });
-      }
+      const positiveCallback = (e, toast) => {
+        axios.delete(ENDPOINT_URL + '/categoria/' + row.id).then(
+          () => {
+            this.rows.splice(row.originalIndex, 1);
+            toast.goAway(0);
+          },
+          () => {
+            toast.goAway(0);
+            toastFactory.showPrimaryToast('Não é possível excluir esta categoria. Ela está sendo utilizada pelos usuários.');
+          }
+        );
+      };
+      const negativeCallback = (e, toast) => {
+        toast.goAway(0);
+      };
+
+      toastFactory.showConfirmToast('Deseja excluir a categoria?', positiveCallback, negativeCallback);
     },
     novo() {
       this.categoriaAtual = {

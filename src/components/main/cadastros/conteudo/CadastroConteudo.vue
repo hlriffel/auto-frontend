@@ -129,6 +129,7 @@ export default {
       }
     },
     removeContent() {
+      this.addedContents.splice(this.selectedContent, 1);
       const removed = this.contents.splice(this.selectedContent, 1);
 
       if (removed[0].id) {

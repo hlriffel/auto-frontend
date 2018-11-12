@@ -59,8 +59,8 @@ export default {
           field: 'nome'
         },
         {
-          label: 'Observação',
-          field: 'observacao'
+          label: 'Nome',
+          field: 'nome'
         },
         {
           label: 'Categoria',

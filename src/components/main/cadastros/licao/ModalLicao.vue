@@ -21,7 +21,7 @@
                                 <div class="select is-fullwidth">
                                     <select v-model="licao.categoria" required id="categoria" >
                                         <option>Selecione uma categoria</option>
-                                        <option v-for="c in categoria" :key="c.id" >
+                                        <option v-for="c in categoria" :key="c.id" :value="{id: c.id}" >
                                             {{c.nome}}
                                         </option>
                                     </select>
@@ -35,7 +35,7 @@
                                 <div class="select is-fullwidth">
                                     <select v-model="licao.caracteristica" required id="caracteristica" >
                                         <option>Selecione uma caracteristica</option>
-                                        <option v-for="cr in caracteristica" :key="cr.id">
+                                        <option v-for="cr in caracteristica" :key="cr.id" :value="{id: cr.id}">
                                             {{cr.nome}}
                                         </option>
                                     </select>

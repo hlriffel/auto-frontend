@@ -20,7 +20,7 @@
     </div>
     <br>
     <modal-licao v-show="showForm"
-            :licaoEditar="licaoaAtual"
+            :licaoEditar="licaoAtual"
             @close="showForm = false"
             @save="salvar">
     </modal-licao>
@@ -59,20 +59,16 @@ export default {
       showForm: false,
       columns: [
         {
-          label: 'Informar lição',
-          field: 'nome'
-        },
-        {
           label: 'Nome',
           field: 'nome'
         },
         {
           label: 'Categoria',
-          field: 'categoria'
+          field: 'categoria.nome'
         },
         {
           label: 'Característica',
-          field: 'caracteristica'
+          field: 'caracteristica.nome'
         },
         {
           label: '',
@@ -90,7 +86,6 @@ export default {
   },
   mounted() {
     this.index();
-    document.getElementsByName
   },
   methods: {
     index() {
@@ -104,11 +99,21 @@ export default {
       axios.post(ENDPOINT_URL + '/licao', licao).then(() => {
         this.index();
       });
-
     },
     editar(row) {
       this.showForm = true;
-      this.licaoAtual = row;    
+      
+      //Montando e moldando o objeto para mandar pro modal quando editar 
+      this.licaoAtual = {
+        id: row.id,
+        nome: row.nome,
+        caracteristica: {
+          id: row.caracteristica.id
+        },
+        categoria: {
+          id: row.categoria.id
+        }
+      };
     },
     excluir(row) {
       const positiveCallback = (e, toast) => {
@@ -133,8 +138,10 @@ export default {
       this.licaoAtual = {
         id: null,
         nome: '', 
-        observacao: ''
+        categoria: null,
+        caracteristica: null
       };
+      
       this.showForm = true;
     }
   }

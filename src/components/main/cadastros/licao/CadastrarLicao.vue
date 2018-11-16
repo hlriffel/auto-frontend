@@ -3,7 +3,7 @@
     <vue-good-table
       :columns="columns"
       :rows="rows"
-      :search-options="{enabled: true}"
+      :search-options="searchOptions"
       :pagination-options="paginationOptions">
       <template slot="table-row" slot-scope="props" >
         {{ props.formattedRow[props.column.field] }}
@@ -40,6 +40,10 @@ export default {
   },
   data() {
     return {
+      searchOptions: {
+        enabled: true,
+        placeholder: 'Procurar lição'
+      },
       paginationOptions: {
         enabled: true,
         nextLabel: 'Próximo',
@@ -86,6 +90,7 @@ export default {
   },
   mounted() {
     this.index();
+    document.getElementsByName
   },
   methods: {
     index() {

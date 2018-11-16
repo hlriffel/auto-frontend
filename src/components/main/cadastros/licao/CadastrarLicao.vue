@@ -95,7 +95,7 @@ export default {
     },
     salvar(licao) {
       this.showForm = false;
-      
+
       axios.post(ENDPOINT_URL + '/licao', licao).then(() => {
         this.index();
       });

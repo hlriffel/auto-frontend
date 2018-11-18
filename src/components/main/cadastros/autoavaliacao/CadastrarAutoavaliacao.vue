@@ -122,7 +122,7 @@ export default {
     },
     excluir(row) {
       const positiveCallback = (e, toast) => {
-        axios.delete(ENDPOINT_URL + '/questionario/' + row).then(
+        axios.delete(ENDPOINT_URL + '/questionario/' + row.id).then(
           () => {
             toast.goAway(0);
             this.index();

@@ -20,7 +20,6 @@
                                 <label for="categoria" class="label">Categoria</label>
                                 <div class="select is-fullwidth">
                                     <select v-model="questionario.categoria" required id="categoria" >
-                                        <option>Selecione uma categoria</option>
                                         <option v-for="c in categoria" :key="c.id" :value="{id: c.id}" >
                                             {{c.nome}}
                                         </option>
@@ -34,7 +33,6 @@
                                 <label for="caracteristica" class="label">Característica</label>
                                 <div class="select is-fullwidth">
                                     <select v-model="questionario.caracteristica" required id="caracteristica" >
-                                        <option>Selecione uma caracteristica</option>
                                         <option v-for="cr in caracteristica" :key="cr.id" :value="{id: cr.id}">
                                             {{cr.nome}}
                                         </option>

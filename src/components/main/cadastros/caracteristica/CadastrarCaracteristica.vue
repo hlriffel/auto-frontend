@@ -7,10 +7,12 @@
       :pagination-options="paginationOptions">
       <template slot="table-row" slot-scope="props" >
         {{ props.formattedRow[props.column.field] }}
-        <div class="level-item" v-if="props.column.field === 'excluir/editar'">
-          <button class="button is-link" @click="excluir(props.row.id)">Excluir</button> 
-          <button class="button is-link" @click="editar(props.row)">Editar</button>  
+        <div class="level-item" v-if="props.column.field === 'excluir'">
+           <button class="button is-link" @click="excluir(props.row)">Excluir</button>   
         </div>
+        <div class="level-item" v-if="props.column.field === 'editar'">
+           <button class="button is-link" @click="editar(props.row)">Editar</button> 
+          </div>
       </template>
     </vue-good-table>
     <br>
@@ -27,11 +29,11 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
-import toastFactory from '@/shared/toastFactory.js';
+import toastFactory from "@/shared/toastFactory.js";
 
-import ModalCaracteristica from './ModalCaracteristica';
+import ModalCaracteristica from "./ModalCaracteristica";
 
 export default {
   components: {
@@ -41,16 +43,16 @@ export default {
     return {
       searchOptions: {
         enabled: true,
-        placeholder: 'Procurar características'
+        placeholder: "Procurar características"
       },
       paginationOptions: {
         enabled: true,
-        nextLabel: 'Próximo',
-        prevLabel: 'Voltar',
-        rowsPerPageLabel: 'Registros por página',
-        ofLabel: 'de',
-        pageLabel: 'página',
-        allLabel: 'Todos',
+        nextLabel: "Próximo",
+        prevLabel: "Voltar",
+        rowsPerPageLabel: "Registros por página",
+        ofLabel: "de",
+        pageLabel: "página",
+        allLabel: "Todos",
         enabled: true,
         perPage: 10
       },
@@ -58,22 +60,27 @@ export default {
       showForm: false,
       columns: [
         {
-          label: 'Informar característica',
-          field: 'nome'
+          label: "Informar característica",
+          field: "nome"
         },
         {
-          label: 'Observação',
-          field: 'observacao'
+          label: "Observação",
+          field: "observacao"
         },
         {
-          label: '',
-          field: 'rota',
-          type: 'rota'
+          label: "",
+          field: "rota",
+          type: "rota"
         },
         {
-          label: '',
-          field: 'excluir/editar',
-          type: 'excluir/editar'
+          label: "",
+          field: "excluir",
+          type: "excluir"
+        },
+        {
+          label: "",
+          field: "editar",
+          type: "editar"
         }
       ],
       rows: []
@@ -84,32 +91,33 @@ export default {
   },
   methods: {
     index() {
-      axios.get(ENDPOINT_URL + '/caracteristica').then(response => {
+      axios.get(ENDPOINT_URL + "/caracteristica").then(response => {
         this.rows = response.data;
       });
     },
     salvar(caracteristica) {
       this.showForm = false;
 
-      axios.post(ENDPOINT_URL + '/caracteristica', caracteristica).then(() => {
+      axios.post(ENDPOINT_URL + "/caracteristica", caracteristica).then(() => {
         this.index();
       });
-
     },
     editar(row) {
       this.showForm = true;
-      this.caracteristicaAtual = row;    
+      this.caracteristicaAtual = row;
     },
     excluir(row) {
       const positiveCallback = (e, toast) => {
-        axios.delete(ENDPOINT_URL + '/caracteristica/' + row).then(
+        axios.delete(ENDPOINT_URL + "/caracteristica/" + row).then(
           () => {
             toast.goAway(0);
             this.index();
           },
           () => {
             toast.goAway(0);
-            toastFactory.showPrimaryToast('Não é possível excluir essa característica. Ela está sendo usada para outros cadastros.');
+            toastFactory.showPrimaryToast(
+              "Não é possível excluir essa característica. Ela está sendo usada para outros cadastros."
+            );
           }
         );
       };
@@ -117,20 +125,23 @@ export default {
         toast.goAway(0);
       };
 
-      toastFactory.showConfirmToast('Deseja excluir a característica?', positiveCallback, negativeCallback);
+      toastFactory.showConfirmToast(
+        "Deseja excluir a característica?",
+        positiveCallback,
+        negativeCallback
+      );
     },
     novo() {
       this.caracteristicaAtual = {
         id: null,
-        nome: '', 
-        observacao: ''
+        nome: "",
+        observacao: ""
       };
       this.showForm = true;
     }
   }
-}
+};
 </script>
 
 <style>
-
 </style>

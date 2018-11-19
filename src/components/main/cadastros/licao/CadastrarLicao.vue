@@ -54,7 +54,6 @@ export default {
         ofLabel: "de",
         pageLabel: "página",
         allLabel: "Todos",
-        enabled: true,
         perPage: 10
       },
       licaoAtual: null,

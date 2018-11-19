@@ -7,10 +7,12 @@
       :pagination-options="paginationOptions">
       <template slot="table-row" slot-scope="props" >
         {{ props.formattedRow[props.column.field] }}
-        <div class="level-item" v-if="props.column.field === 'excluir/editar'">
-          <button class="button is-link" @click="excluir(props.row)">Excluir</button> 
-          <button class="button is-link" @click="editar(props.row)">Editar</button>  
+        <div class="level-item" v-if="props.column.field === 'excluir'">
+             <button class="button is-link" @click="excluir(props.row)">Excluir</button>   
         </div>
+          <div class="level-item" v-if="props.column.field === 'editar'">
+           <button class="button is-link" @click="editar(props.row)">Editar</button> 
+          </div>
       </template>
     </vue-good-table>
     <br>
@@ -27,11 +29,11 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
-import toastFactory from '@/shared/toastFactory.js';
+import toastFactory from "@/shared/toastFactory.js";
 
-import ModalCategoria from './ModalCategoria';
+import ModalCategoria from "./ModalCategoria";
 
 export default {
   components: {
@@ -41,16 +43,16 @@ export default {
     return {
       searchOptions: {
         enabled: true,
-        placeholder: 'Procurar categorias'
+        placeholder: "Procurar categorias"
       },
       paginationOptions: {
         enabled: true,
-        nextLabel: 'Próximo',
-        prevLabel: 'Voltar',
-        rowsPerPageLabel: 'Registros por página',
-        ofLabel: 'de',
-        pageLabel: 'página',
-        allLabel: 'Todos',
+        nextLabel: "Próximo",
+        prevLabel: "Voltar",
+        rowsPerPageLabel: "Registros por página",
+        ofLabel: "de",
+        pageLabel: "página",
+        allLabel: "Todos",
         enabled: true,
         perPage: 10
       },
@@ -58,18 +60,23 @@ export default {
       showForm: false,
       columns: [
         {
-          label: 'Informar Categoria',
-          field: 'nome'
+          label: "Informar Categoria",
+          field: "nome"
         },
         {
-          label: '',
-          field: 'rota',
-          type: 'rota'
+          label: "",
+          field: "rota",
+          type: "rota"
         },
         {
-          label: '',
-          field: 'excluir/editar',
-          type: 'excluir/editar'
+          label: "",
+          field: "excluir",
+          type: "excluir"
+        },
+        {
+          label: "",
+          field: "editar",
+          type: "editar"
         }
       ],
       rows: []
@@ -80,14 +87,14 @@ export default {
   },
   methods: {
     loadCategories() {
-      axios.get(ENDPOINT_URL + '/categoria').then(response => {
+      axios.get(ENDPOINT_URL + "/categoria").then(response => {
         this.rows = response.data;
       });
     },
     salvar(categoria) {
       this.showForm = false;
 
-      axios.post(ENDPOINT_URL + '/categoria', categoria).then(() => {
+      axios.post(ENDPOINT_URL + "/categoria", categoria).then(() => {
         this.loadCategories();
       });
     },
@@ -97,14 +104,16 @@ export default {
     },
     excluir(row) {
       const positiveCallback = (e, toast) => {
-        axios.delete(ENDPOINT_URL + '/categoria/' + row.id).then(
+        axios.delete(ENDPOINT_URL + "/categoria/" + row.id).then(
           () => {
             this.rows.splice(row.originalIndex, 1);
             toast.goAway(0);
           },
           () => {
             toast.goAway(0);
-            toastFactory.showPrimaryToast('Não é possível excluir esta categoria. Ela está sendo utilizada pelos usuários.');
+            toastFactory.showPrimaryToast(
+              "Não é possível excluir esta categoria. Ela está sendo utilizada pelos usuários."
+            );
           }
         );
       };
@@ -112,18 +121,21 @@ export default {
         toast.goAway(0);
       };
 
-      toastFactory.showConfirmToast('Deseja excluir a categoria?', positiveCallback, negativeCallback);
+      toastFactory.showConfirmToast(
+        "Deseja excluir a categoria?",
+        positiveCallback,
+        negativeCallback
+      );
     },
     novo() {
       this.categoriaAtual = {
-        nome: ''
+        nome: ""
       };
       this.showForm = true;
     }
   }
-}
+};
 </script>
 
 <style>
-
 </style>

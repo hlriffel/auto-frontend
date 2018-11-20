@@ -6,10 +6,11 @@ import user from '@/shared/user.js';
 import Login from '@/components/login/Login';
 import MainComponent from '@/components/main/MainComponent';
 import SelecionarCategorias from '@/components/main/selecionar-categorias/SelecionarCategorias';
+import Autoavaliacao from '@/components/main/autoavaliacao/Autoavaliacao';
 
 import Cadastros from '@/components/main/cadastros/Cadastros';
 import CadastrarCategoria from '@/components/main/cadastros/categoria/CadastrarCategoria';
-import CadastroConteudo from '@/components/main/cadastros/conteudo/CadastroConteudo';
+import CadastrarConteudo from '@/components/main/cadastros/conteudo/CadastrarConteudo';
 import CadastrarCaracteristica from '@/components/main/cadastros/caracteristica/CadastrarCaracteristica';
 import CadastrarLicao from '@/components/main/cadastros/licao/CadastrarLicao';
 import CadastrarAutoavaliacao from '@/components/main/cadastros/autoavaliacao/CadastrarAutoavaliacao';
@@ -22,7 +23,7 @@ const routes = [
   { name: 'main', path: '/main', component: MainComponent,
     children: [
       { name: 'selecionar-categorias', path: 'selecionar-categorias', component: SelecionarCategorias },
-      { name: 'autoavaliacao', path: 'autoavaliacao' },
+      { name: 'autoavaliacao', path: 'autoavaliacao', component: Autoavaliacao },
       { name: 'resultados', path: 'resultados' },
       { name: 'introducao', path: 'introducao' },
       { name: 'cadastros', path: 'cadastros', component: Cadastros,
@@ -31,7 +32,7 @@ const routes = [
           { name: 'caracteristica', path: 'caracteristica', component: CadastrarCaracteristica },
           { name: 'questionario', path: 'questionario', component: CadastrarAutoavaliacao},
           { name: 'licao', path: 'licao', component: CadastrarLicao },
-          { name: 'conteudo', path: 'conteudo', component: CadastroConteudo }
+          { name: 'conteudo', path: 'conteudo', component: CadastrarConteudo }
         ]
       }
     ]

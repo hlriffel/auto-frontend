@@ -7,6 +7,13 @@
       :pagination-options="paginationOptions">
       <template slot="table-row" slot-scope="props" >
         {{ props.formattedRow[props.column.field] }}
+        <div class="level-item" v-if="props.column.field === 'rota'">
+          <button class="button is-link" @click="proximoCadastro(props.row.id)">
+            <span class="icon is-medium">
+              <i class="fas fa-angle-right"></i>
+            </span>
+          </button>
+        </div>
         <div class="level-item" v-if="props.column.field === 'excluir'">
            <button class="button is-link" @click="excluir(props.row)">Excluir</button>   
         </div>
@@ -53,7 +60,6 @@ export default {
         ofLabel: "de",
         pageLabel: "página",
         allLabel: "Todos",
-        enabled: true,
         perPage: 10
       },
       caracteristicaAtual: null,
@@ -138,6 +144,40 @@ export default {
         observacao: ""
       };
       this.showForm = true;
+    },
+    proximoCadastro(caracteristicaId) {
+      const customActions = [
+        {
+          text: 'AUTOAVALIAÇÃO',
+          onClick: (e, toast) => {
+            toast.goAway(0);
+
+            this.$router.push({
+              name: 'questionario',
+              query: {
+                ...this.$route.query,
+                caracteristicaId
+              }
+            });
+          }
+        },
+        {
+          text: 'LIÇÃO',
+          onClick: (e, toast) => {
+            toast.goAway(0);
+
+            this.$router.push({
+              name: 'licao',
+              query: {
+                ...this.$route.query,
+                caracteristicaId
+              }
+            });
+          }
+        }
+      ];
+
+      toastFactory.showToastWithCustomActions('Para qual cadastro você deseja prosseguir?', customActions);
     }
   }
 };

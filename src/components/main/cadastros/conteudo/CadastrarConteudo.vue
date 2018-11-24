@@ -1,5 +1,9 @@
 <template>
   <div id="cadastro-conteudo">
+    <div id="titulo">
+      <p class="is-size-3" v-if="nomeLicao">Conteúdos da lição {{ nomeLicao }}</p>
+      <p class="is-size-3" v-else>Conteúdos da introdução</p>
+    </div>
     <section class="section" id="conteudo-main-section">
       <div class="columns is-vcentered">
         <div class="column is-1">
@@ -53,19 +57,22 @@ import axios from 'axios';
 const APPLICATION_PDF = 'application/pdf';
 
 export default {
-  props: {
-    lecture: Number
-  },
   data() {
     return {
       contents: [],
       selectedContent: 0,
       uploading: false,
       addedContents: [],
-      removedContents: []
+      removedContents: [],
+      licaoId: null,
+      nomeLicao: null
     }
   },
   mounted() {
+    if (this.$route.query.licaoId) {
+      this.licaoId = this.$route.query.licaoId;
+    }
+
     this.loadContents();
   },
   methods: {
@@ -86,9 +93,9 @@ export default {
         ordem = 10;
       }
 
-      if (this.lecture) {
+      if (this.licaoId) {
         intro = 'N';
-        key = `${filename}_${this.lecture.id}_${ordem}${fileExt}`;
+        key = `${filename}_${this.licaoId}_${ordem}${fileExt}`;
       } else {
         intro = 'S';
         key = `${filename}_${ordem}${fileExt}`;
@@ -110,6 +117,12 @@ export default {
         caminho: encodeURI(caminho),
         fileMetadata: file
       };
+
+      if (this.licaoId) {
+        content.licao = {
+          id: this.licaoId
+        };
+      }
 
       this.addedContents.push(content);
       this.contents.push(content);
@@ -143,7 +156,6 @@ export default {
       this.uploading = true;
 
       const contentData = {
-        licao: this.lecture,
         addedContents: this.addedContents,
         removedContents: this.removedContents
       };
@@ -174,10 +186,16 @@ export default {
       );
     },
     loadContents() {
-      if (this.lecture) {
-        axios.get(ENDPOINT_URL + '/conteudo/' + this.lecture.id).then(
+      if (this.licaoId) {
+        axios.get(ENDPOINT_URL + '/conteudo/' + this.licaoId).then(
           response => {
             this.contents = response.data;
+
+            axios.get(ENDPOINT_URL + '/licao/' + this.licaoId).then(
+              response => {
+                this.nomeLicao = response.data.nome;
+              }
+            );
           }
         );
       } else {

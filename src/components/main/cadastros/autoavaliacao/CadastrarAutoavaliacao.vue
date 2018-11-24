@@ -7,12 +7,12 @@
       :pagination-options="paginationOptions">
       <template slot="table-row" slot-scope="props" >
         {{ props.formattedRow[props.column.field] }}
-    <div class="level-item" v-if="props.column.field === 'excluir'">
+        <div class="level-item" v-if="props.column.field === 'excluir'">
           <button class="button is-link" @click="excluir(props.row)">Excluir</button>   
         </div>
         <div class="level-item" v-if="props.column.field === 'editar'">
-           <button class="button is-link" @click="editar(props.row)">Editar</button> 
-          </div>
+          <button class="button is-link" @click="editar(props.row)">Editar</button> 
+        </div>
       </template>
     </vue-good-table>
     <br>
@@ -51,7 +51,6 @@ export default {
         ofLabel: 'de',
         pageLabel: 'página',
         allLabel: 'Todos',
-        enabled: true,
         perPage: 10
       },
       questionarioAtual: null,
@@ -68,11 +67,6 @@ export default {
         {
           label: 'Característica',
           field: 'caracteristica.nome'
-        },
-        {
-          label: '',
-          field: 'rota',
-          type: 'rota'
         },
         {
           label: '',
@@ -93,7 +87,13 @@ export default {
   },
   methods: {
     index() {
-      axios.get(ENDPOINT_URL + '/questionario').then(response => {
+      let endpoint = ENDPOINT_URL + '/questionario';
+
+      if (Object.keys(this.$route.query).length) {
+        endpoint += this.$route.fullPath.substring(this.$route.fullPath.indexOf('?'));
+      }
+
+      axios.get(endpoint).then(response => {
         this.rows = response.data;
       });
     },
@@ -146,6 +146,19 @@ export default {
         caracteristica: null,
         categoria: null
       };
+
+      if (this.$route.query.categoriaId) {
+        this.questionarioAtual.categoria = {
+          id: this.$route.query.categoriaId
+        }
+      }
+
+      if (this.$route.query.caracteristicaId) {
+        this.questionarioAtual.caracteristica = {
+          id: this.$route.query.caracteristicaId
+        }
+      }
+
       this.showForm = true;
     }
   }

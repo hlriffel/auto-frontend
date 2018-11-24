@@ -3,7 +3,7 @@
     <h1 class="title">Cadastros</h1>
     <bread-crumb></bread-crumb>
     <hr>
-    <router-view></router-view>
+    <router-view :key="$route.fullPath"></router-view>
   </div>
 </template>
 

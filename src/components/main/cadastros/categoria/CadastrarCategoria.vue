@@ -7,12 +7,19 @@
       :pagination-options="paginationOptions">
       <template slot="table-row" slot-scope="props" >
         {{ props.formattedRow[props.column.field] }}
-        <div class="level-item" v-if="props.column.field === 'excluir'">
-             <button class="button is-link" @click="excluir(props.row)">Excluir</button>   
+        <div class="level-item" v-if="props.column.field === 'rota'">
+          <button class="button is-link" @click="proximoCadastro(props.row.id)">
+            <span class="icon is-medium">
+              <i class="fas fa-angle-right"></i>
+            </span>
+          </button>
         </div>
-          <div class="level-item" v-if="props.column.field === 'editar'">
-           <button class="button is-link" @click="editar(props.row)">Editar</button> 
-          </div>
+        <div class="level-item" v-if="props.column.field === 'excluir'">
+          <button class="button is-link" @click="excluir(props.row)">Excluir</button>   
+        </div>
+        <div class="level-item" v-if="props.column.field === 'editar'">
+          <button class="button is-link" @click="editar(props.row)">Editar</button> 
+        </div>
       </template>
     </vue-good-table>
     <br>
@@ -53,7 +60,6 @@ export default {
         ofLabel: "de",
         pageLabel: "página",
         allLabel: "Todos",
-        enabled: true,
         perPage: 10
       },
       categoriaAtual: null,
@@ -132,6 +138,14 @@ export default {
         nome: ""
       };
       this.showForm = true;
+    },
+    proximoCadastro(categoriaId) {
+      this.$router.push({
+        name: 'caracteristica',
+        query: {
+          categoriaId
+        }
+      });
     }
   }
 };

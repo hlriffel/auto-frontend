@@ -7,12 +7,19 @@
       :pagination-options="paginationOptions">
       <template slot="table-row" slot-scope="props" >
         {{ props.formattedRow[props.column.field] }}
+        <div class="level-item" v-if="props.column.field === 'rota'">
+          <button class="button is-link" @click="proximoCadastro(props.row.id)">
+            <span class="icon is-medium">
+              <i class="fas fa-angle-right"></i>
+            </span>
+          </button>   
+        </div>
         <div class="level-item" v-if="props.column.field === 'excluir'">
-           <button class="button is-link" @click="excluir(props.row)">Excluir</button>   
+          <button class="button is-link" @click="excluir(props.row)">Excluir</button>   
         </div>
         <div class="level-item" v-if="props.column.field === 'editar'">
-           <button class="button is-link" @click="editar(props.row)">Editar</button> 
-          </div>
+          <button class="button is-link" @click="editar(props.row)">Editar</button> 
+        </div>
       </template>
     </vue-good-table>
 
@@ -30,11 +37,11 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
-import toastFactory from "@/shared/toastFactory.js";
+import toastFactory from '@/shared/toastFactory.js';
 
-import ModalLicao from "./ModalLicao";
+import ModalLicao from './ModalLicao';
 
 export default {
   components: {
@@ -44,47 +51,47 @@ export default {
     return {
       searchOptions: {
         enabled: true,
-        placeholder: "Procurar lição"
+        placeholder: 'Procurar lição'
       },
       paginationOptions: {
         enabled: true,
-        nextLabel: "Próximo",
-        prevLabel: "Voltar",
-        rowsPerPageLabel: "Registros por página",
-        ofLabel: "de",
-        pageLabel: "página",
-        allLabel: "Todos",
+        nextLabel: 'Próximo',
+        prevLabel: 'Voltar',
+        rowsPerPageLabel: 'Registros por página',
+        ofLabel: 'de',
+        pageLabel: 'página',
+        allLabel: 'Todos',
         perPage: 10
       },
       licaoAtual: null,
       showForm: false,
       columns: [
         {
-          label: "Nome",
-          field: "nome"
+          label: 'Nome',
+          field: 'nome'
         },
         {
-          label: "Categoria",
-          field: "categoria.nome"
+          label: 'Categoria',
+          field: 'categoria.nome'
         },
         {
-          label: "Característica",
-          field: "caracteristica.nome"
+          label: 'Característica',
+          field: 'caracteristica.nome'
         },
         {
-          label: "",
-          field: "rota",
-          type: "rota"
+          label: '',
+          field: 'rota',
+          type: 'rota'
         },
         {
-          label: "",
-          field: "excluir",
-          type: "excluir"
+          label: '',
+          field: 'excluir',
+          type: 'excluir'
         },
         {
-          label: "",
-          field: "editar",
-          type: "editar"
+          label: '',
+          field: 'editar',
+          type: 'editar'
         }
       ],
       rows: []
@@ -95,14 +102,20 @@ export default {
   },
   methods: {
     index() {
-      axios.get(ENDPOINT_URL + "/licao").then(response => {
+      let endpoint = ENDPOINT_URL + '/licao';
+
+      if (Object.keys(this.$route.query).length) {
+        endpoint += this.$route.fullPath.substring(this.$route.fullPath.indexOf('?'));
+      }
+
+      axios.get(endpoint).then(response => {
         this.rows = response.data;
       });
     },
     salvar(licao) {
       this.showForm = false;
 
-      axios.post(ENDPOINT_URL + "/licao", licao).then(() => {
+      axios.post(ENDPOINT_URL + '/licao', licao).then(() => {
         this.index();
       });
     },
@@ -123,7 +136,7 @@ export default {
     },
     excluir(row) {
       const positiveCallback = (e, toast) => {
-        axios.delete(ENDPOINT_URL + "/licao/" + row).then(
+        axios.delete(ENDPOINT_URL + '/licao/' + row).then(
           () => {
             toast.goAway(0);
             this.index();
@@ -131,7 +144,7 @@ export default {
           () => {
             toast.goAway(0);
             toastFactory.showPrimaryToast(
-              "Não é possível excluir essa lição. Ela está sendo usada para outros cadastros."
+              'Não é possível excluir essa lição. Ela está sendo usada para outros cadastros.'
             );
           }
         );
@@ -141,7 +154,7 @@ export default {
       };
 
       toastFactory.showConfirmToast(
-        "Deseja excluir a lição?",
+        'Deseja excluir a lição?',
         positiveCallback,
         negativeCallback
       );
@@ -149,12 +162,32 @@ export default {
     novo() {
       this.licaoAtual = {
         id: null,
-        nome: "",
+        nome: '',
         categoria: null,
         caracteristica: null
       };
 
+      if (this.$route.query.categoriaId) {
+        this.licaoAtual.categoria = {
+          id: this.$route.query.categoriaId
+        }
+      }
+
+      if (this.$route.query.caracteristicaId) {
+        this.licaoAtual.caracteristica = {
+          id: this.$route.query.caracteristicaId
+        }
+      }
+
       this.showForm = true;
+    },
+    proximoCadastro(licaoId) {
+      this.$router.push({
+        name: 'conteudo',
+        query: {
+          licaoId
+        }
+      });
     }
   }
 };

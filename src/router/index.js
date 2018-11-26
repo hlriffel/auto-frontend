@@ -9,6 +9,7 @@ import SelecionarCategorias from '@/components/main/selecionar-categorias/Seleci
 import Autoavaliacao from '@/components/main/autoavaliacao/Autoavaliacao';
 
 import Cadastros from '@/components/main/cadastros/Cadastros';
+import Resultados from '@/components/main/resultados/Resultados';
 import CadastrarCategoria from '@/components/main/cadastros/categoria/CadastrarCategoria';
 import CadastrarConteudo from '@/components/main/cadastros/conteudo/CadastrarConteudo';
 import CadastrarCaracteristica from '@/components/main/cadastros/caracteristica/CadastrarCaracteristica';
@@ -24,7 +25,7 @@ const routes = [
     children: [
       { name: 'selecionar-categorias', path: 'selecionar-categorias', component: SelecionarCategorias },
       { name: 'autoavaliacao', path: 'autoavaliacao', component: Autoavaliacao },
-      { name: 'resultados', path: 'resultados' },
+      { name: 'resultados', path: 'resultados', component: Resultados },
       { name: 'introducao', path: 'introducao' },
       { name: 'cadastros', path: 'cadastros', component: Cadastros,
         children: [

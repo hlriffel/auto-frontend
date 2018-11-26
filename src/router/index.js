@@ -5,6 +5,7 @@ import user from '@/shared/user.js';
 
 import Login from '@/components/login/Login';
 import MainComponent from '@/components/main/MainComponent';
+import Introducao from '@/components/intro/introducao';
 import SelecionarCategorias from '@/components/main/selecionar-categorias/SelecionarCategorias';
 import Autoavaliacao from '@/components/main/autoavaliacao/Autoavaliacao';
 import AcessarLicao from '@/components/main/licao/AcessarLicao';
@@ -27,7 +28,7 @@ const routes = [
       { name: 'autoavaliacao', path: 'autoavaliacao', component: Autoavaliacao },
       { name: 'resultados', path: 'resultados' },
       { name: 'licoes', path: 'licoes/:categoria/:caracteristica', component: AcessarLicao, props: true },
-      { name: 'introducao', path: 'introducao' },
+      { name: 'introducao', path: 'introducao', component: Introducao },
       { name: 'cadastros', path: 'cadastros', component: Cadastros,
         children: [
           { name: 'categoria', path: 'categoria', component: CadastrarCategoria },

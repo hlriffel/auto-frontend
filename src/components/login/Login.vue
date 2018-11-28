@@ -52,6 +52,7 @@ export default {
     },
     signInSuccess(googleUser) {
       const profile = googleUser.getBasicProfile();
+      const authResponse = googleUser.getAuthResponse();
 
       user.setName(profile.getName());
       user.setEmail(profile.getEmail());

@@ -27,7 +27,7 @@ const routes = [
       { name: 'autoavaliacao', path: 'autoavaliacao', component: Autoavaliacao },
       { name: 'resultados', path: 'resultados', component: Resultados },
       { name: 'introducao', path: 'introducao' },
-      { name: 'cadastros', path: 'cadastros', component: Cadastros,
+      { name: 'cadastros', path: 'cadastros', component: Cadastros, redirect: '/main/cadastros/categoria',
         children: [
           { name: 'categoria', path: 'categoria', component: CadastrarCategoria },
           { name: 'caracteristica', path: 'caracteristica', component: CadastrarCaracteristica },

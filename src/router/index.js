@@ -5,13 +5,13 @@ import user from '@/shared/user.js';
 
 import Login from '@/components/login/Login';
 import MainComponent from '@/components/main/MainComponent';
-import Introducao from '@/components/intro/introducao';
+import Introducao from '@/components/intro/Introducao';
 import SelecionarCategorias from '@/components/main/selecionar-categorias/SelecionarCategorias';
 import Autoavaliacao from '@/components/main/autoavaliacao/Autoavaliacao';
+import Resultados from '@/components/main/resultados/Resultados';
 import AcessarLicao from '@/components/main/licao/AcessarLicao';
 
 import Cadastros from '@/components/main/cadastros/Cadastros';
-import Resultados from '@/components/main/resultados/Resultados';
 import CadastrarCategoria from '@/components/main/cadastros/categoria/CadastrarCategoria';
 import CadastrarConteudo from '@/components/main/cadastros/conteudo/CadastrarConteudo';
 import CadastrarCaracteristica from '@/components/main/cadastros/caracteristica/CadastrarCaracteristica';

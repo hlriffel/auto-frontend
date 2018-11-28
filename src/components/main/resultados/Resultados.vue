@@ -116,7 +116,13 @@ export default {
       this.$nextTick(
         () => {
           const onPointClick = event => {
-            console.log(event);
+            this.$router.push({
+              name: 'licoes',
+              params: {
+                categoria: event.point.categoria,
+                caracteristica: event.point.caracteristica
+              }
+            });
           };
           const chart = this.$refs.mainchart.chart;
 

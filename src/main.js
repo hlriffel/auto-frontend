@@ -12,7 +12,7 @@ import GSignInButton from 'vue-google-signin-button';
 import VueCookies from 'vue-cookies';
 import VueGoodTablePlugin from 'vue-good-table';
 import Toasted from 'vue-toasted';
-// import VuePlyr from 'vue-plyr';
+import VuePlyr from 'vue-plyr';
 
 import Highcharts from 'highcharts';
 import highchartsMore from 'highcharts/highcharts-more';
@@ -26,7 +26,7 @@ Vue.use(VueCookies);
 Vue.use(GSignInButton);
 Vue.use(Toasted);
 Vue.use(VueGoodTablePlugin);
-// Vue.use(VuePlyr);
+Vue.use(VuePlyr);
 
 highchartsMore(Highcharts);
 Vue.use(VueHighcharts);

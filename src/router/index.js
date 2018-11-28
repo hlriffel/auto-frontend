@@ -5,8 +5,10 @@ import user from '@/shared/user.js';
 
 import Login from '@/components/login/Login';
 import MainComponent from '@/components/main/MainComponent';
+import Introducao from '@/components/intro/introducao';
 import SelecionarCategorias from '@/components/main/selecionar-categorias/SelecionarCategorias';
 import Autoavaliacao from '@/components/main/autoavaliacao/Autoavaliacao';
+import AcessarLicao from '@/components/main/licao/AcessarLicao';
 
 import Cadastros from '@/components/main/cadastros/Cadastros';
 import Resultados from '@/components/main/resultados/Resultados';
@@ -15,7 +17,6 @@ import CadastrarConteudo from '@/components/main/cadastros/conteudo/CadastrarCon
 import CadastrarCaracteristica from '@/components/main/cadastros/caracteristica/CadastrarCaracteristica';
 import CadastrarLicao from '@/components/main/cadastros/licao/CadastrarLicao';
 import CadastrarAutoavaliacao from '@/components/main/cadastros/autoavaliacao/CadastrarAutoavaliacao';
-import Introducao from '@/components/intro/introducao';
 
 Vue.use(VueRouter);
 
@@ -27,6 +28,7 @@ const routes = [
       { name: 'selecionar-categorias', path: 'selecionar-categorias', component: SelecionarCategorias },
       { name: 'autoavaliacao', path: 'autoavaliacao', component: Autoavaliacao },
       { name: 'resultados', path: 'resultados', component: Resultados },
+      { name: 'licoes', path: 'licoes/:categoria/:caracteristica', component: AcessarLicao, props: true },
       { name: 'introducao', path: 'introducao', component: Introducao },
       { name: 'cadastros', path: 'cadastros', component: Cadastros, redirect: '/main/cadastros/categoria',
         children: [

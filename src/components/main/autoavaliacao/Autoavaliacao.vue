@@ -16,13 +16,13 @@
                 <div class="column">
                   <label class="radio" :for="getIdentifier(pergunta)">
                     <input type="radio" :name="getIdentifier(pergunta)" value="1" v-model.number="pergunta.resposta">
-                    Extremamente não satisfeito
+                    Extremamente insatisfeito
                   </label>
                 </div>
                 <div class="column">
                   <label class="radio" :for="getIdentifier(pergunta)">
                     <input type="radio" :name="getIdentifier(pergunta)" value="2" v-model.number="pergunta.resposta">
-                    Não satisfeito
+                    Insatisfeito
                   </label>
                 </div>
                 <div class="column">

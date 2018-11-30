@@ -31,8 +31,8 @@ Vue.use(VuePlyr);
 highchartsMore(Highcharts);
 Vue.use(VueHighcharts);
 
- window.ENDPOINT_URL = 'https://auto-backend.herokuapp.com';
-//window.ENDPOINT_URL = 'http://localhost:8090';
+window.ENDPOINT_URL = 'https://auto-backend.herokuapp.com';
+// window.ENDPOINT_URL = 'http://localhost:8090';
 
 new Vue({
   render: h => h(App),

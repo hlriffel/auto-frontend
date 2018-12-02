@@ -6,6 +6,7 @@ class User {
   cpf = null;
   imageUrl = null;
   admin = false;
+  idToken = null;
 
   setId(id) {
     this.id = id;
@@ -30,6 +31,10 @@ class User {
   setAdmin(admin) {
     this.admin = admin;
   }
+
+  setIdToken(idToken) {
+    this.idToken = idToken;
+  }
   
   setUserData(userData) {
     this.id = userData.id;
@@ -38,6 +43,7 @@ class User {
     this.cpf = userData.cpf;
     this.imageUrl = userData.imageUrl;
     this.admin = userData.admin;
+    this.idToken = userData.idToken;
   }
 
   getUserAsObject() {
@@ -47,7 +53,8 @@ class User {
       email: this.email,
       cpf: this.cpf,
       imageUrl: this.imageUrl,
-      admin: this.admin
+      admin: this.admin,
+      idToken: this.idToken
     }
   }
 

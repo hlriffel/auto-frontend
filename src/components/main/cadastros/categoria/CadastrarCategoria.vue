@@ -36,8 +36,7 @@
 </template>
 
 <script>
-import axios from "axios";
-
+import requestService from '@/shared/requestService.js';
 import toastFactory from "@/shared/toastFactory.js";
 
 import ModalCategoria from "./ModalCategoria";
@@ -93,14 +92,14 @@ export default {
   },
   methods: {
     loadCategories() {
-      axios.get(ENDPOINT_URL + "/categoria").then(response => {
+      requestService.get('/categoria').then(response => {
         this.rows = response.data;
       });
     },
     salvar(categoria) {
       this.showForm = false;
 
-      axios.post(ENDPOINT_URL + "/categoria", categoria).then(() => {
+      requestService.post('/categoria', categoria).then(() => {
         this.loadCategories();
       });
     },
@@ -110,7 +109,7 @@ export default {
     },
     excluir(row) {
       const positiveCallback = (e, toast) => {
-        axios.delete(ENDPOINT_URL + "/categoria/" + row.id).then(
+        requestService.delete('/categoria/' + row.id).then(
           () => {
             this.rows.splice(row.originalIndex, 1);
             toast.goAway(0);

@@ -47,9 +47,9 @@
 </template>
 
 <script>
-
-import axios from 'axios';
 import pdf from 'vue-pdf';
+
+import requestService from '@/shared/requestService.js';
 
 export default {
   components: {
@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     loadContents() {
-      axios.get(ENDPOINT_URL + '/conteudo').then(
+      requestService.get('/conteudo').then(
         response => {
           this.contents = response.data;
 

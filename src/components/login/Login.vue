@@ -25,8 +25,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-
+import requestService from '@/shared/requestService.js';
 import user from '@/shared/user.js';
 
 export default {
@@ -39,7 +38,7 @@ export default {
   },
   methods: {
     getUserByEmail(email) {
-      return axios.get(ENDPOINT_URL + '/usuario/' + email);
+      return requestService.get('/usuario/' + email);
     },
     signUserUp(user) {
       const userParam = {
@@ -48,62 +47,66 @@ export default {
         admin: false
       };
 
-      return axios.post(ENDPOINT_URL + '/usuario', userParam);
+      return requestService.post('/usuario', userParam);
     },
     signInSuccess(googleUser) {
       const profile = googleUser.getBasicProfile();
       const authResponse = googleUser.getAuthResponse();
 
-      user.setName(profile.getName());
-      user.setEmail(profile.getEmail());
-      user.setImageUrl(profile.getImageUrl());
+      requestService.login(authResponse.id_token).then(
+        () => {
+          user.setName(profile.getName());
+          user.setEmail(profile.getEmail());
+          user.setImageUrl(profile.getImageUrl());
+          user.setIdToken(authResponse.id_token);
 
-      const proceedToMain = () => {
-        this.$cookies.set('userData', user.getUserAsObject(), 60 * 30);
+          const proceedToMain = () => {
+            this.$cookies.set('userData', user.getUserAsObject(), 60 * 30);
 
-        this.$router.push({
-          path: '/main'
-        });
-      }
-
-      this.getUserByEmail(user.email).then(
-        response => {
-          const userData = response.data;
-
-          if (userData) {
-            user.setId(userData.id);
-            user.setCpf(userData.cpf);
-            user.setAdmin(userData.admin);
-
-            proceedToMain();
+            this.$router.push({
+              path: '/main'
+            });
           }
-        },
-        error => {
-          if (error.response
-              && error.response.status === 404) {
-            this.signUserUp(user.getUserAsBackendObject()).then(
-              response => {
-                const userData = response.data;
-  
-                if (userData) {
-                  user.setId(userData.id);
-                  user.setCpf(userData.cpf);
-                  user.setAdmin(userData.admin);
-                }
-  
+
+          this.getUserByEmail(user.email).then(
+            response => {
+              const userData = response.data;
+
+              if (userData) {
+                user.setId(userData.id);
+                user.setCpf(userData.cpf);
+                user.setAdmin(userData.admin);
+
                 proceedToMain();
-              },
-              () => {
-                // TODO: Do something
               }
-            );
-          }
+            },
+            error => {
+              if (error.response
+                  && error.response.status === 404) {
+                this.signUserUp(user.getUserAsBackendObject()).then(
+                  response => {
+                    const userData = response.data;
+      
+                    if (userData) {
+                      user.setId(userData.id);
+                      user.setCpf(userData.cpf);
+                      user.setAdmin(userData.admin);
+                    }
+      
+                    proceedToMain();
+                  },
+                  () => {
+                    // TODO: Do something
+                  }
+                );
+              }
+            }
+          );
         }
       );
     },
-    signInError(error) {
+    signInError() {
       // TODO: Do something here also
-      console.log(error);
     }
   }
 }

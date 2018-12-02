@@ -20,10 +20,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-
-import toastFactory from '@/shared/toastFactory.js';
-
+import requestService from '@/shared/requestService.js';
 
 export default {
   data() {
@@ -62,15 +59,11 @@ export default {
   },
   methods: {
     index() {
-      
-    
-      let endpoint = ENDPOINT_URL + '/licao';
-  
-      
-      endpoint += '/'+this.$route.params.categoria;
-      endpoint += '/'+this.$route.params.caracteristica;
+      let endpoint = '/licao';
+      endpoint += '/' + this.$route.params.categoria;
+      endpoint += '/' + this.$route.params.caracteristica;
 
-      axios.get(endpoint).then(response => {
+      requestService.get(endpoint).then(response => {
         this.rows = response.data;
       });
     }

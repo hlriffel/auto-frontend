@@ -37,8 +37,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-
+import requestService from '@/shared/requestService.js';
 import toastFactory from '@/shared/toastFactory.js';
 
 import ModalLicao from './ModalLicao';
@@ -102,20 +101,20 @@ export default {
   },
   methods: {
     index() {
-      let endpoint = ENDPOINT_URL + '/licao';
+      let endpoint = '/licao';
 
       if (Object.keys(this.$route.query).length) {
         endpoint += this.$route.fullPath.substring(this.$route.fullPath.indexOf('?'));
       }
 
-      axios.get(endpoint).then(response => {
+      requestService.get(endpoint).then(response => {
         this.rows = response.data;
       });
     },
     salvar(licao) {
       this.showForm = false;
 
-      axios.post(ENDPOINT_URL + '/licao', licao).then(() => {
+      requestService.post('/licao', licao).then(() => {
         this.index();
       });
     },
@@ -136,7 +135,7 @@ export default {
     },
     excluir(row) {
       const positiveCallback = (e, toast) => {
-        axios.delete(ENDPOINT_URL + '/licao/' + row).then(
+        requestService.delete('/licao/' + row.id).then(
           () => {
             toast.goAway(0);
             this.index();

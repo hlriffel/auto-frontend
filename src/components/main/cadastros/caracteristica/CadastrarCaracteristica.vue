@@ -36,8 +36,7 @@
 </template>
 
 <script>
-import axios from "axios";
-
+import requestService from '@/shared/requestService.js';
 import toastFactory from "@/shared/toastFactory.js";
 
 import ModalCaracteristica from "./ModalCaracteristica";
@@ -97,14 +96,14 @@ export default {
   },
   methods: {
     index() {
-      axios.get(ENDPOINT_URL + "/caracteristica").then(response => {
+      requestService.get('/caracteristica').then(response => {
         this.rows = response.data;
       });
     },
     salvar(caracteristica) {
       this.showForm = false;
 
-      axios.post(ENDPOINT_URL + "/caracteristica", caracteristica).then(() => {
+      requestService.post('/caracteristica', caracteristica).then(() => {
         this.index();
       });
     },
@@ -114,7 +113,7 @@ export default {
     },
     excluir(row) {
       const positiveCallback = (e, toast) => {
-        axios.delete(ENDPOINT_URL + "/caracteristica/" + row).then(
+        requestService.delete('/caracteristica/' + row.id).then(
           () => {
             toast.goAway(0);
             this.index();

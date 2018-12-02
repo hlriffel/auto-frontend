@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import requestService from '@/shared/requestService.js';
 
 const APPLICATION_PDF = 'application/pdf';
 
@@ -103,10 +103,10 @@ export default {
 
       if (file.type === APPLICATION_PDF) {
         tipo = 'P';
-        caminho = `${ENDPOINT_URL}/conteudo/pdf/${key}`;
+        caminho = `${requestService.getEndpointUrl()}/conteudo/pdf/${key}`;
       } else {
         tipo = 'V';
-        caminho = `${ENDPOINT_URL}/conteudo/video/${key}`;
+        caminho = `${requestService.getEndpointUrl()}/conteudo/video/${key}`;
       }
 
       const content = {
@@ -160,7 +160,7 @@ export default {
         removedContents: this.removedContents
       };
 
-      axios.post(ENDPOINT_URL + '/conteudo', contentData).then(
+      requestService.post('/conteudo', contentData).then(
         () => {
           const formData = new FormData();
           this.addedContents.forEach(
@@ -169,7 +169,7 @@ export default {
             }
           );
 
-          axios.post(ENDPOINT_URL + '/conteudo/upload', formData, {
+          requestService.post('/conteudo/upload', formData, {
             headers: {
               'content-type': 'multipart/form-data'
             }
@@ -187,11 +187,11 @@ export default {
     },
     loadContents() {
       if (this.licaoId) {
-        axios.get(ENDPOINT_URL + '/conteudo/' + this.licaoId).then(
+        requestService.get('/conteudo/' + this.licaoId).then(
           response => {
             this.contents = response.data;
 
-            axios.get(ENDPOINT_URL + '/licao/' + this.licaoId).then(
+            requestService.get('/licao/' + this.licaoId).then(
               response => {
                 this.nomeLicao = response.data.nome;
               }
@@ -199,7 +199,7 @@ export default {
           }
         );
       } else {
-        axios.get(ENDPOINT_URL + '/conteudo').then(
+        requestService.get('/conteudo').then(
           response => {
             this.contents = response.data;
           }

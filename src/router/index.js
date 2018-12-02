@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+import requestService from '@/shared/requestService.js';
 import user from '@/shared/user.js';
 
 import Login from '@/components/login/Login';
@@ -58,9 +59,19 @@ router.beforeEach(
       const userData = window.$cookies.get('userData');
 
       if (userData) {
-        user.setUserData(userData);
+        if (requestService.isAuthorized()) {
+          user.setUserData(userData);
 
-        next();
+          next();
+        } else {
+          requestService.login(userData.idToken).then(
+            () => {
+              user.setUserData(userData);
+
+              next();
+            }
+          );
+        }
       } else {
         next('/login');
       }

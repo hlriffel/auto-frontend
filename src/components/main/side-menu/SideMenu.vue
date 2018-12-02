@@ -27,8 +27,7 @@
           </router-link>
         </ul>
 
-        <!-- <div id="admin-section" v-if="profileData.admin"> -->
-        <div id="admin-section">
+        <div id="admin-section" v-if="profileData.admin">
           <p class="menu-label" style="margin-top: 1em">
             Administração
           </p>
@@ -58,9 +57,11 @@
 </template>
 
 <script>
-import axios from 'axios';
+import requestService from '@/shared/requestService.js';
 import user from '@/shared/user.js';
+
 import FormCpf from '../cpf/FormCpf';
+
 export default {
   components: {
     FormCpf
@@ -97,7 +98,7 @@ export default {
       this.formCpfClosed = true;
       user.setCpf(cpf);
       this.$cookies.set('userData', user.getUserAsObject())
-      axios.post(ENDPOINT_URL + '/usuario', user.getUserAsBackendObject());
+      requestService.post('/usuario', user.getUserAsBackendObject());
     },
     isRotaCadastros() {
       return this.$route.path.indexOf('cadastros') > -1;

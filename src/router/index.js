@@ -69,6 +69,9 @@ router.beforeEach(
               user.setUserData(userData);
 
               next();
+            },
+            () => {
+              next('/login');
             }
           );
         }

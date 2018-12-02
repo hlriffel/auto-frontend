@@ -55,8 +55,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-
+import requestService from '@/shared/requestService.js';
 import user from '@/shared/user.js';
 import toastFactory from '@/shared/toastFactory.js';
 
@@ -72,7 +71,7 @@ export default {
   },
   methods: {
     loadEvaluations() {
-      axios.get(ENDPOINT_URL + '/autoavaliacao/' + user.id).then(
+      requestService.get('/autoavaliacao/' + user.id).then(
         response => {
           this.evaluations = response.data;
         }
@@ -155,7 +154,7 @@ export default {
           }
         );
 
-        axios.post(ENDPOINT_URL + '/autoavaliacao', resultData).then(
+        requestService.post('/autoavaliacao', resultData).then(
           () => {
             this.$router.push({
               path: '/main/resultados'

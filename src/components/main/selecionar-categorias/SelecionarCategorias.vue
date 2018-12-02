@@ -28,8 +28,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-
+import requestService from '@/shared/requestService.js';
 import user from '@/shared/user.js';
 import toastFactory from '@/shared/toastFactory.js';
 
@@ -40,7 +39,7 @@ export default {
     }
   },
   mounted() {
-    axios.get(ENDPOINT_URL + '/categoria').then(
+    requestService.get('/categoria').then(
       categoriesResponse => {
         categoriesResponse.data.forEach(
           category => {
@@ -48,7 +47,7 @@ export default {
           }
         );
 
-        axios.get(ENDPOINT_URL + '/usuario-categoria/' + user.id).then(
+        requestService.get('/usuario-categoria/' + user.id).then(
           userCategoriesResponse => {
 
             userCategoriesResponse.data.forEach(
@@ -82,7 +81,7 @@ export default {
           categorias: selectedCategories
         };
 
-        axios.post(ENDPOINT_URL + '/usuario-categoria', data).then(
+        requestService.post('/usuario-categoria', data).then(
           () => {
             this.$router.push({
               path: '/main/autoavaliacao'

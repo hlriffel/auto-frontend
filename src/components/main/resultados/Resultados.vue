@@ -15,9 +15,7 @@
 </template>
 
 <script>
-
-import axios from 'axios';
-
+import requestService from '@/shared/requestService.js';
 import user from '@/shared/user.js';
 
 const standardChartProperties = {
@@ -62,7 +60,7 @@ export default {
   },  
   methods: {
     index() {
-      axios.get(ENDPOINT_URL + '/resposta/' + user.id).then(
+      requestService.get('/resposta/' + user.id).then(
         response => {
           const graficosResponse = response.data;
           

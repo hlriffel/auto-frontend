@@ -29,8 +29,9 @@
 </template>
 
 <script>
-import axios from 'axios';
+import requestService from '@/shared/requestService.js';
 import toastFactory from '@/shared/toastFactory.js';
+
 import ModalAutoavaliacao from "./ModalAutoavaliacao";
 
 export default {
@@ -87,20 +88,20 @@ export default {
   },
   methods: {
     index() {
-      let endpoint = ENDPOINT_URL + '/questionario';
+      let endpoint = '/questionario';
 
       if (Object.keys(this.$route.query).length) {
         endpoint += this.$route.fullPath.substring(this.$route.fullPath.indexOf('?'));
       }
 
-      axios.get(endpoint).then(response => {
+      requestService.get(endpoint).then(response => {
         this.rows = response.data;
       });
     },
     salvar(autoavaliacao) {
       this.showForm = false;
 
-      axios.post(ENDPOINT_URL + '/questionario', autoavaliacao).then(() => {
+      requestService.post('/questionario', autoavaliacao).then(() => {
         this.index();
       });
 
@@ -122,7 +123,7 @@ export default {
     },
     excluir(row) {
       const positiveCallback = (e, toast) => {
-        axios.delete(ENDPOINT_URL + '/questionario/' + row.id).then(
+        requestService.delete('/questionario/' + row.id).then(
           () => {
             toast.goAway(0);
             this.index();

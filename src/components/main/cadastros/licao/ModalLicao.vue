@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import requestService from '@/shared/requestService.js';
 
 export default {
   props: {
@@ -73,10 +73,10 @@ export default {
     };
   },
   mounted() {
-      axios.get(ENDPOINT_URL + '/categoria').then(response => {
+      requestService.get('/categoria').then(response => {
         this.categoria = response.data
       });
-      axios.get(ENDPOINT_URL + '/caracteristica').then(response => {
+      requestService.get('/caracteristica').then(response => {
         this.caracteristica = response.data;
       });
   },

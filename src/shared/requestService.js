@@ -2,8 +2,8 @@ import axios from 'axios';
 
 class RequestService {
 
-  // ENDPOINT_URL = 'https://auto-backend.herokuapp.com';
-  ENDPOINT_URL = 'http://localhost:8090';
+  ENDPOINT_URL = 'https://auto-backend.herokuapp.com';
+  // ENDPOINT_URL = 'http://localhost:8090';
   authorized = false;
 
   login(idToken) {

@@ -4,9 +4,14 @@
       <div id="usuarioCategoria">
         <h1 class="title">Categoria: {{ evaluations[selectedEvaluation].usuarioCategoria.nome }}</h1>
       </div>
+      <div v-if="!evaluations[selectedEvaluation].perguntas || !evaluations[selectedEvaluation].perguntas.length">
+        <section class="section">
+          <p class="subtitle">Não existem perguntas cadastradas para esta categoria</p>
+        </section>
+      </div>
       <div id="perguntas">
         <form @submit.prevent="proceed()">
-          <section class="section">
+          <section class="section" v-if="evaluations[selectedEvaluation].perguntas.length">
             <div v-for="pergunta in evaluations[selectedEvaluation].perguntas" :key="pergunta.id">
               <div class="question-desc">
                 <p class="is-size-4">{{ pergunta.pergunta }}</p>
@@ -14,31 +19,31 @@
 
               <div class="columns">
                 <div class="column">
-                  <label class="radio" :for="getIdentifier(pergunta)">
+                  <label class="radio">
                     <input type="radio" :name="getIdentifier(pergunta)" value="1" v-model.number="pergunta.resposta">
                     Extremamente insatisfeito
                   </label>
                 </div>
                 <div class="column">
-                  <label class="radio" :for="getIdentifier(pergunta)">
+                  <label class="radio">
                     <input type="radio" :name="getIdentifier(pergunta)" value="2" v-model.number="pergunta.resposta">
                     Insatisfeito
                   </label>
                 </div>
                 <div class="column">
-                  <label class="radio" :for="getIdentifier(pergunta)">
+                  <label class="radio">
                     <input type="radio" :name="getIdentifier(pergunta)" value="3" v-model.number="pergunta.resposta">
                     Satisfeito
                   </label>
                 </div>
                 <div class="column">
-                  <label class="radio" :for="getIdentifier(pergunta)">
+                  <label class="radio">
                     <input type="radio" :name="getIdentifier(pergunta)" value="4" v-model.number="pergunta.resposta">
                     Muito satisfeito
                   </label>
                 </div>
                 <div class="column">
-                  <label class="radio" :for="getIdentifier(pergunta)">
+                  <label class="radio">
                     <input type="radio" :name="getIdentifier(pergunta)" value="5" v-model.number="pergunta.resposta">
                     Extremamente satisfeito
                   </label>
@@ -108,49 +113,51 @@ export default {
 
         this.evaluations.forEach(
           evaluation => {
-            const result = {
-              usuarioCategoria: evaluation.usuarioCategoria.id,
-              respostaQuestionario: []
-            };
+            if (evaluation.perguntas.length) {
+              const result = {
+                usuarioCategoria: evaluation.usuarioCategoria.id,
+                respostaQuestionario: []
+              };
 
-            let caracteristicas = evaluation.perguntas.map(pergunta => pergunta.caracteristica);
-            
-            // Removendo as características duplicadas
-            caracteristicas = caracteristicas.filter(
-              (carac, index, self) => {
-                return self.findIndex(
-                  c => {
-                    return c.id === carac.id
-                  }
-                ) === index;
-              }
-            );
+              let caracteristicas = evaluation.perguntas.map(pergunta => pergunta.caracteristica);
+              
+              // Removendo as características duplicadas
+              caracteristicas = caracteristicas.filter(
+                (carac, index, self) => {
+                  return self.findIndex(
+                    c => {
+                      return c.id === carac.id
+                    }
+                  ) === index;
+                }
+              );
 
-            caracteristicas.forEach(
-              caracteristica => {
-                const perguntas = evaluation.perguntas.filter(
-                  pergunta => {
-                    return pergunta.caracteristica.id === caracteristica.id;
-                  }
-                );
-                let mediaCaracteristica = 0;
+              caracteristicas.forEach(
+                caracteristica => {
+                  const perguntas = evaluation.perguntas.filter(
+                    pergunta => {
+                      return pergunta.caracteristica.id === caracteristica.id;
+                    }
+                  );
+                  let mediaCaracteristica = 0;
 
-                perguntas.forEach(
-                  pergunta => {
-                    mediaCaracteristica += pergunta.resposta;
-                  }
-                );
+                  perguntas.forEach(
+                    pergunta => {
+                      mediaCaracteristica += pergunta.resposta;
+                    }
+                  );
 
-                mediaCaracteristica /= (perguntas.length || 1);
+                  mediaCaracteristica /= (perguntas.length || 1);
 
-                result.respostaQuestionario.push({
-                  caracteristica: caracteristica.id,
-                  valor: mediaCaracteristica
-                });
-              }
-            );
+                  result.respostaQuestionario.push({
+                    caracteristica: caracteristica.id,
+                    valor: mediaCaracteristica
+                  });
+                }
+              );
 
-            resultData.push(result);
+              resultData.push(result);
+            }
           }
         );
 

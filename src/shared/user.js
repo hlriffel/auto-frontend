@@ -15,7 +15,6 @@ class User {
   setName(name) {
     this.name = name;
   }
-
   setEmail(email) {
     this.email = email;
   }
@@ -35,7 +34,7 @@ class User {
   setIdToken(idToken) {
     this.idToken = idToken;
   }
-  
+
   setUserData(userData) {
     this.id = userData.id;
     this.name = userData.name;

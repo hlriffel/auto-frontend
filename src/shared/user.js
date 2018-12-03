@@ -15,6 +15,7 @@ class User {
   setName(name) {
     this.name = name;
   }
+
   setEmail(email) {
     this.email = email;
   }

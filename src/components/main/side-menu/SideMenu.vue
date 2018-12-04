@@ -84,6 +84,12 @@ export default {
     this.profileData.imageUrl = user.imageUrl;
     this.profileData.admin = user.admin;
     this.formCpfClosed = (this.profileData.cpf);
+
+    if (!this.formCpfClosed) {
+      this.$router.push({
+        name: 'introducao'
+      });
+    }
   },
   methods: {
     logout() {

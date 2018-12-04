@@ -43,6 +43,12 @@
         </div>
       </div>
     </section>
+    <button
+      class="button is-link is-pulled-right"
+      v-show="isLastContentDisplayed()"
+      @click="proceedToMain()">
+      Concluir
+    </button>
   </div>
 </template>
 
@@ -71,6 +77,9 @@ export default {
     }
   },
   methods: {
+    isLastContentDisplayed() {
+      return this.index + 1 == this.contents.length;
+    },
     loadContents() {
       requestService.get('/conteudo').then(
         response => {
@@ -83,7 +92,7 @@ export default {
       );
     },
     next() {
-      if (this.index + 1 <= this.contents.length) {
+      if (!this.isLastContentDisplayed()) {
         this.index++;
         this.selectedContent = this.contents[this.index];
       }
@@ -93,6 +102,11 @@ export default {
         this.index--;
         this.selectedContent = this.contents[this.index];
       }
+    },
+    proceedToMain() {
+      this.$router.push({
+        name: 'main'
+      });
     }
   }
 }

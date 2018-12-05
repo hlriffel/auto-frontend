@@ -93,7 +93,7 @@ export default {
   },
   methods: {
     loadContents() {
-      requestService.get('/conteudo').then(
+      requestService.get('/visualizarConteudo').then(
         response => {
           this.contents = response.data;
 

@@ -47,9 +47,6 @@
           </router-link>
         </ul>
         <ul class="menu-list">
-          <router-link tag="li" to="/main/visualizarConteudo" class="menu-item">
-            <a :class="{ 'is-active': $route.name === 'visualizar-conteudo' }">Visualizar Conteudo</a>
-          </router-link>
           <li><a @click="logout()">Sair</a></li>
         </ul>
       </div>

@@ -32,7 +32,7 @@ const routes = [
       { name: 'resultados', path: 'resultados', component: Resultados },
       { name: 'licoes', path: 'licoes/:categoria/:caracteristica', component: AcessarLicao, props: true },
       { name: 'introducao', path: 'introducao', component: Introducao },
-      { name: 'visualizar-conteudo', path: 'visualizarConteudo', component: VisualizarConteudo },
+      { name: 'visualizar-conteudo', path: 'visualizar-conteudo/:licao', component: VisualizarConteudo, props: true },
       { name: 'cadastros', path: 'cadastros', component: Cadastros, redirect: '/main/cadastros/categoria',
         children: [
           { name: 'categoria', path: 'categoria', component: CadastrarCategoria },

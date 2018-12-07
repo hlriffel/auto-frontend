@@ -5,16 +5,16 @@
       :rows="rows"
       :search-options="searchOptions"
       :pagination-options="paginationOptions">
-        <template slot="table-row" slot-scope="props" >
-        {{ props.formattedRow[props.column.field] }}
-            <div class="level-item" v-if="props.column.field === 'rota'">
-                <button class="button is-link" >
-                    <span class="icon is-medium">
-                        <i class="fas fa-angle-right"></i>
-                    </span>
-                </button>   
-            </div>
-        </template>
+      <template slot="table-row" slot-scope="props" >
+      {{ props.formattedRow[props.column.field] }}
+        <div class="level-item" v-if="props.column.field === 'rota'">
+          <button class="button is-link" @click="verConteudos(props.row.id)">
+            <span class="icon is-medium">
+              <i class="fas fa-angle-right"></i>
+            </span>
+          </button>   
+        </div>
+      </template>
     </vue-good-table>
   </div>
 </template>
@@ -65,6 +65,11 @@ export default {
 
       requestService.get(endpoint).then(response => {
         this.rows = response.data;
+      });
+    },
+    verConteudos(licaoId) {
+      this.$router.push({
+        path: '/main/visualizar-conteudo/' + licaoId
       });
     }
   }

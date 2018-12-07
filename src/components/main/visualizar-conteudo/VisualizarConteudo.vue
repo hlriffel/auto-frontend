@@ -7,58 +7,42 @@
             <div class="columns">
               <div class="column is-2">
                 <div class="card-content margin_top">
-                  <a class="button is-link is-large" @click="previous()" :class="[index == 0 ? 'disabled' : 'able']">
+                  <button class="button is-link is-large" @click="previous()" :disabled="currentPage === 1 && index === 0">
                     <span class="icon is-medium">
                       <i class="fas fa-angle-left"></i>
                     </span>
-                  </a>
+                  </button>
                 </div>
               </div>
               <div class="column is-6">
-                <div class="card-content info_bk">
-                  <div v-if="selectedContent.tipo == 'V'">
+                <div class="card-content info_bk" v-if="contents[index]">
+                  <div v-if="contents[index].tipo === 'V'">
                     <vue-plyr>
-                      <video :src="selectedContent.caminho">
-                        <source :src="selectedContent.caminho"  type="video/mp4" size="720">
+                      <video :src="contents[index].caminho">
+                        <source :src="contents[index].caminho"  type="video/mp4" size="720">
                         <track kind="captions" label="Português" srclang="pt-br" src="captions-en.vtt" default>
                       </video>
                     </vue-plyr>
                   </div>
-                  <div v-else-if="selectedContent.tipo == 'P'">
+                  <div v-else-if="contents[index].tipo === 'P'">
                   <div class="has-text-right">
-                    Pg:&nbsp;{{currentPage}} - {{pageCount}}
+                    Página {{ currentPage }} de {{ pageCount }}
                   </div>
-                    <pdf :src="selectedContent.caminho" :page="currentPage" @num-pages="pageCount = $event" @page-loaded="currentPage = $event"></pdf>
+                    <pdf :src="contents[index].caminho" :page="currentPage" @num-pages="setPageNumber($event)" @page-loaded="pageLoaded($event)"></pdf>
                   </div>
                 </div>
               </div>
               <div class="column is-2">
                 <div class="card-content margin_top"> 
-                  <a class="button is-link is-large" @click="next()" :class="[index == (contents.length -1) ? 'disabled' : 'able']">
+                  <button class="button is-link is-large" @click="next()" :disabled="currentPage === pageCount && index === (contents.length - 1)">
                     <span class="icon is-medium">
                       <i class="fas fa-angle-right"></i>
                     </span>
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
-             <div class="columns is-centered" v-show="pageCount > 0">
-              <div class="column is-1">
-                <a class="button is-link is-large" @click="previousPage()" :class="[currentPage == 1 ? 'disabled' : 'able']">
-                    <span class="icon is-medium">
-                      <i class="fas fa-angle-left"></i>
-                    </span>
-                  </a>
-              </div>
-              <div class="column is-1">
-                <a class="button is-link is-large" @click="nextPage()" :class="[currentPage == pageCount ? 'disabled' : 'able']">
-                    <span class="icon is-medium">
-                      <i class="fas fa-angle-right"></i>
-                    </span>
-                  </a>
-              </div>
-            </div>                
-          </div><!-- /is-centered-->
+          </div>
         </div>
       </div>
     </section>
@@ -71,6 +55,9 @@ import pdf from 'vue-pdf';
 import requestService from '@/shared/requestService.js';
 
 export default {
+  props: {
+    licao: String
+  },
   components: {
     pdf
   },
@@ -80,10 +67,10 @@ export default {
   data() {
     return {
       contents: [],
-      selectedContent: null,
       index: 0,
       currentPage: 1,
       pageCount: 0,
+      gettingBackFromAnotherContent: false
     }
   },
   computed: {
@@ -93,39 +80,56 @@ export default {
   },
   methods: {
     loadContents() {
-      requestService.get('/visualizarConteudo').then(
+      requestService.get('/conteudo/' + this.licao).then(
         response => {
           this.contents = response.data;
-
-          if (this.contents.length > 0) {
-            this.selectedContent = this.contents[0];
-          }
         }
       );
     },
     next() {
-      if (this.index + 1 <= this.contents.length) {
+      const tipo = this.contents[this.index].tipo;
+
+      this.gettingBackFromAnotherContent = false;
+
+      if (tipo === 'P') {
+        if (this.currentPage === this.pageCount
+            && this.index < this.contents.length) {
+          this.index++;
+          this.currentPage = 1;
+        } else {
+          this.currentPage++;
+        }
+      } else if (tipo === 'V') {
         this.index++;
-        this.selectedContent = this.contents[this.index];
-        this.currentPage = 1;
-      }
-    }, 
-    previous() {
-      if (this.index - 1 >= 0) {
-        this.index--;
-        this.selectedContent = this.contents[this.index];
         this.currentPage = 1;
       }
     },
-    nextPage() {
-      if (this.currentPage + 1 <= this.pageCount) {
-        this.currentPage++;
+    previous() {
+      const tipo = this.contents[this.index].tipo;
+
+      if (tipo === 'P') {
+        if (this.currentPage > 1) {
+          this.currentPage--;
+        } else if (this.index > 0) {
+          this.index--;
+          this.currentPage = this.pageCount;
+          this.gettingBackFromAnotherContent = true;
+        }
+      } else if (tipo === 'V') {
+        this.index--;
+        this.currentPage = this.pageCount;
+        this.gettingBackFromAnotherContent = true;
       }
-    }, 
-    previousPage() {
-      if (this.currentPage - 1 >= 1) {
-        this.currentPage--;
+    },
+    setPageNumber($event) {
+      this.pageCount = $event;
+
+      if (this.gettingBackFromAnotherContent) {
+        this.currentPage = this.pageCount;
       }
+    },
+    pageLoaded($event) {
+      this.currentPage = $event;
     }
   }
 }

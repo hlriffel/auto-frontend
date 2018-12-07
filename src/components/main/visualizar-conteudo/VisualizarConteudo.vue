@@ -41,17 +41,11 @@
                   </button>
                 </div>
               </div>
-            </div>                
+            </div>
           </div>
         </div>
       </div>
     </section>
-    <button
-      class="button is-link is-pulled-right"
-      v-show="isLastContentDisplayed()"
-      @click="proceedToMain()">
-      Concluir
-    </button>
   </div>
 </template>
 
@@ -61,6 +55,9 @@ import pdf from 'vue-pdf';
 import requestService from '@/shared/requestService.js';
 
 export default {
+  props: {
+    licao: String
+  },
   components: {
     pdf
   },
@@ -82,11 +79,8 @@ export default {
     }
   },
   methods: {
-    isLastContentDisplayed() {
-      return this.index + 1 == this.contents.length;
-    },
     loadContents() {
-      requestService.get('/conteudo').then(
+      requestService.get('/conteudo/' + this.licao).then(
         response => {
           this.contents = response.data;
         }
@@ -109,7 +103,7 @@ export default {
         this.index++;
         this.currentPage = 1;
       }
-    }, 
+    },
     previous() {
       const tipo = this.contents[this.index].tipo;
 
@@ -136,11 +130,6 @@ export default {
     },
     pageLoaded($event) {
       this.currentPage = $event;
-    },
-    proceedToMain() {
-      this.$router.push({
-        name: 'main'
-      });
     }
   }
 }

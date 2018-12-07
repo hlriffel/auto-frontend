@@ -45,6 +45,8 @@
           <router-link tag="li" to="/main/introducao" class="menu-item">
             <a :class="{ 'is-active': $route.name === 'introducao' }">Ver introdução</a>
           </router-link>
+        </ul>
+        <ul class="menu-list">
           <li><a @click="logout()">Sair</a></li>
         </ul>
       </div>

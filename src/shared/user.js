@@ -35,7 +35,7 @@ class User {
   setIdToken(idToken) {
     this.idToken = idToken;
   }
-  
+
   setUserData(userData) {
     this.id = userData.id;
     this.name = userData.name;

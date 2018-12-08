@@ -96,12 +96,14 @@ export default {
             && this.index < this.contents.length) {
           this.index++;
           this.currentPage = 1;
+          this.pageCount = 1;
         } else {
           this.currentPage++;
         }
       } else if (tipo === 'V') {
         this.index++;
         this.currentPage = 1;
+        this.pageCount = 1;
       }
     },
     previous() {
